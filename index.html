@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Step-by-Step to Reduce Toil with AI</title>
+  <style>
+    :root {
+      --ink: #10233f;
+      --line: #d8e2ec;
+      --soft: #f5f8fb;
+      --teal: #0f8f8a;
+      --navy: #153761;
+      --amber: #d59000;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #f8fbfd, #edf4f8);
+      line-height: 1.35;
+    }
+    .page {
+      width: min(1220px, calc(100% - 32px));
+      margin: 24px auto;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 18px 45px rgba(16, 35, 63, .12);
+    }
+    header {
+      padding: 34px 42px 26px;
+      color: #fff;
+      background: linear-gradient(90deg, var(--navy), var(--teal));
+    }
+    .eyebrow {
+      margin: 0 0 10px;
+      color: #d8f3f0;
+      font-size: 15px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+    h1 {
+      max-width: 980px;
+      margin: 0;
+      font-size: clamp(34px, 5vw, 56px);
+      line-height: 1.03;
+      letter-spacing: 0;
+    }
+    .subtitle {
+      max-width: 990px;
+      margin: 16px 0 0;
+      color: #edf8f7;
+      font-size: 19px;
+    }
+    main { padding: 32px 42px 42px; }
+    .architecture, .min-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .arch-card, .min-box {
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-top: 7px solid var(--teal);
+      border-radius: 8px;
+      background: var(--soft);
+    }
+    .arch-card:nth-child(2), .min-box:nth-child(2) { border-top-color: var(--navy); }
+    .arch-card:nth-child(3), .min-box:nth-child(3) { border-top-color: var(--amber); }
+    h2 {
+      margin: 0 0 10px;
+      font-size: 23px;
+      line-height: 1.14;
+      letter-spacing: 0;
+    }
+    h3 {
+      margin: 0 0 8px;
+      color: var(--teal);
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0;
+    }
+    p { margin: 0; }
+    ul {
+      margin: 0;
+      padding-left: 18px;
+      color: #26364b;
+      font-size: 14px;
+    }
+    li { margin: 4px 0; }
+    .steps {
+      display: grid;
+      gap: 15px;
+    }
+    .step {
+      display: grid;
+      grid-template-columns: 62px 1fr;
+      gap: 16px;
+      align-items: stretch;
+    }
+    .badge {
+      display: grid;
+      place-items: center;
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      color: #fff;
+      background: var(--teal);
+      font-size: 26px;
+      font-weight: 900;
+      box-shadow: inset 0 -7px 0 rgba(0,0,0,.14);
+    }
+    .step:nth-child(2) .badge, .step:nth-child(5) .badge { background: var(--navy); }
+    .step:nth-child(3) .badge, .step:nth-child(7) .badge { background: var(--amber); }
+    .step:nth-child(6) .badge { background: #476f91; }
+    .card {
+      display: grid;
+      grid-template-columns: .85fr 1.15fr 1fr;
+      gap: 18px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-left: 6px solid var(--teal);
+      border-radius: 8px;
+      background: #fff;
+    }
+    .step:nth-child(2) .card, .step:nth-child(5) .card { border-left-color: var(--navy); }
+    .step:nth-child(3) .card, .step:nth-child(7) .card { border-left-color: var(--amber); }
+    .step:nth-child(6) .card { border-left-color: #476f91; }
+    .process {
+      padding: 13px;
+      border: 1px solid #cbd9e6;
+      border-radius: 8px;
+      background: #f8fbfd;
+    }
+    .process strong {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--navy);
+      font-size: 14px;
+      text-transform: uppercase;
+    }
+    .output, .formula {
+      padding: 13px;
+      border: 1px solid #f0d59c;
+      border-radius: 8px;
+      background: #fff8e8;
+      color: #24344a;
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .output strong {
+      display: block;
+      margin-bottom: 5px;
+      color: #8b5c00;
+      font-size: 14px;
+      text-transform: uppercase;
+    }
+    .section {
+      margin-top: 30px;
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--soft);
+    }
+    .formula {
+      margin: 16px 0;
+      text-align: center;
+      font-size: 24px;
+      font-weight: 900;
+    }
+    footer {
+      padding: 22px 42px 28px;
+      color: #fff;
+      background: linear-gradient(90deg, var(--navy), var(--teal));
+      border-top: 1px solid var(--line);
+      font-size: 18px;
+      font-weight: 900;
+    }
+    footer span { color: #ffd98d; }
+    @media (max-width: 1000px) {
+      header, main, footer { padding-left: 24px; padding-right: 24px; }
+      .architecture, .card, .min-grid { grid-template-columns: 1fr; }
+      .step { grid-template-columns: 1fr; }
+    }
+    @media print {
+      body { background: #fff; }
+      .page { width: 100%; margin: 0; border: 0; box-shadow: none; }
+      .arch-card, .step, .section { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <article class="page">
+    <header>
+      <p class="eyebrow">Platform Engineering</p>
+      <h1>Step-by-Step to Reduce Toil with AI</h1>
+      <p class="subtitle">A practical method: <strong>JIRA</strong> shows demand, <strong>Icinga</strong> shows operational signals, <strong>SOPs</strong> show manual actions, and AI processes turn those inputs into decisions, workflows, automation candidates, and measurable KPI reduction.</p>
+    </header>
+
+    <main>
+      <section class="architecture">
+        <div class="arch-card">
+          <h2>1. Collect</h2>
+          <ul>
+            <li><strong>JIRA</strong>: incidents, requests, comments, SLAs.</li>
+            <li><strong>Icinga</strong>: alerts, host, service, duration, recurrence.</li>
+            <li><strong>SOPs</strong>: symptoms, steps, commands, rollback.</li>
+          </ul>
+        </div>
+        <div class="arch-card">
+          <h2>2. Enrich With AI</h2>
+          <ul>
+            <li>Clean and classify records.</li>
+            <li>Group similar issues.</li>
+            <li>Correlate tickets, alerts, SOPs, logs, and deployments.</li>
+          </ul>
+        </div>
+        <div class="arch-card">
+          <h2>3. Validate And Automate</h2>
+          <ul>
+            <li>Validate with resolver or service owner.</li>
+            <li>Create the platform backlog.</li>
+            <li>Transform into self-service and IaC.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="steps">
+        <div class="step">
+          <div class="badge">1</div>
+          <div class="card">
+            <div><h2>Identify Repetitive Manual Work</h2><h3>How To Do It</h3><ul><li>Export <strong>JIRA</strong> tickets from the last 3 to 6 months.</li><li>Export recurring <strong>Icinga</strong> alerts.</li><li>List <strong>SOPs</strong> that are executed often.</li></ul></div>
+            <div class="process"><strong>AI Process: Toil Detection</strong>Groups tickets, alerts, and SOPs that describe the same recurring problem. Creates families such as access, certificates, monitoring, environment, deployment, firewall, and database.</div>
+            <div class="output"><strong>Expected Output</strong>Toil inventory: topic, volume, impacted service, affected team, data source, and linked SOP.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="badge">2</div>
+          <div class="card">
+            <div><h2>Measure Frequency And Impact</h2><h3>How To Do It</h3><ul><li>Count <strong>JIRA</strong> tickets by topic.</li><li>Measure resolution time and reopened tickets.</li><li>Measure <strong>Icinga</strong> alert duration and recurrence.</li></ul></div>
+            <div class="process"><strong>AI Process: Scoring And Prioritization</strong>Calculates a simple score: volume + time lost + risk + user impact + SOP complexity. High-score items become the first candidates.</div>
+            <div class="output"><strong>Expected Output</strong>Top 10 topics to automate or standardize first.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="badge">3</div>
+          <div class="card">
+            <div><h2>Standardize Runbooks And Interfaces</h2><h3>How To Do It</h3><ul><li>Compare similar <strong>SOPs</strong>.</li><li>Define required fields.</li><li>Choose standards for naming, owner, tags, and thresholds.</li></ul></div>
+            <div class="process"><strong>AI Process: Golden Path Design</strong>Turns a family of tickets and SOPs into a standard path: request form, runbook, validation criteria, approval conditions, and rollback.</div>
+            <div class="output"><strong>Expected Output</strong>Golden path ready to publish in the platform catalog.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="badge">4</div>
+          <div class="card">
+            <div><h2>Automate Safe Repeatable Actions</h2><h3>How To Do It</h3><ul><li>Select stable, well-understood <strong>SOPs</strong>.</li><li>Start with low-risk actions.</li><li>Add validation, logs, approvals, and rollback.</li></ul></div>
+            <div class="process"><strong>AI Process: SOP-To-Automation</strong>Converts SOP steps into draft Ansible, Terraform, scripts, or CI/CD pipelines. Flags sensitive actions for human validation.</div>
+            <div class="output"><strong>Expected Output</strong>Versioned automation draft, tested and reviewed by a human.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="badge">5</div>
+          <div class="card">
+            <div><h2>Integrate Tools And Data Flows</h2><h3>How To Do It</h3><ul><li>Connect <strong>JIRA</strong>, <strong>Icinga</strong>, CI/CD, and <strong>SOP</strong> documentation.</li><li>Link ticket, alert, service, and deployment.</li><li>Write automation status back to <strong>JIRA</strong>.</li></ul></div>
+            <div class="process"><strong>AI Process: Correlation And Enrichment</strong>Rebuilds the timeline: ticket opened, Icinga alert, recent deployment, logs, metrics, SOP used, and action applied.</div>
+            <div class="output"><strong>Expected Output</strong>Enriched incident context, likely cause, and available evidence.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="badge">6</div>
+          <div class="card">
+            <div><h2>Add Observability And Feedback Loops</h2><h3>How To Do It</h3><ul><li>Track noisy <strong>Icinga</strong> alerts and recurring incidents.</li><li>Measure automation success, failure, and duration.</li><li>Update <strong>SOPs</strong> and <strong>Icinga</strong> thresholds after incidents.</li></ul></div>
+            <div class="process"><strong>AI Process: Feedback Analysis</strong>Detects whether automation is really reducing toil. Suggests Icinga thresholds, SLO controls, and runbook improvements.</div>
+            <div class="output"><strong>Expected Output</strong>Dashboard: avoided tickets, reduced alerts, time saved, and failures to fix.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="badge">7</div>
+          <div class="card">
+            <div><h2>Continuously Improve And Retire Toil</h2><h3>How To Do It</h3><ul><li>Review top <strong>JIRA</strong> tickets and top <strong>Icinga</strong> alerts every month.</li><li>Remove obsolete <strong>SOPs</strong>.</li><li>Feed the Platform Engineering backlog.</li></ul></div>
+            <div class="process"><strong>AI Process: Continuous Improvement</strong>Produces the monthly toil report, detects new patterns, proposes the next golden paths, and estimates potential value.</div>
+            <div class="output"><strong>Expected Output</strong>Prioritized backlog: standardize, self-service, automate, improve alerting, or retire procedure.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Minimum Vital Information Per Source</h2>
+        <div class="min-grid">
+          <div class="min-box"><h3><strong>JIRA</strong></h3><ul><li>Clear title.</li><li>Impacted service or application.</li><li>Start and end date/time.</li><li>Symptom.</li><li>Applied resolution.</li><li>Resolver or team.</li><li>SOP used.</li><li>Time spent.</li></ul></div>
+          <div class="min-box"><h3><strong>Icinga</strong></h3><ul><li>Host.</li><li>Service check.</li><li>State.</li><li>Start and return-to-OK timestamp.</li><li>Exact check message.</li><li>Duration.</li><li>Recurrence.</li><li>JIRA link if possible.</li></ul></div>
+          <div class="min-box"><h3><strong>SOP</strong></h3><ul><li>Procedure name.</li><li>Covered symptoms.</li><li>Exact steps.</li><li>Commands or tools.</li><li>Success validation.</li><li>Rollback.</li><li>Owner.</li><li>Last update date.</li></ul></div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>What AI Can Do When Vital Information Is Missing</h2>
+        <div class="min-grid">
+          <div class="min-box"><h3>Complete The Context</h3><ul><li>Compare a weak <strong>JIRA</strong> ticket with <strong>Icinga</strong> alerts from the same time window.</li><li>Find the closest matching <strong>SOP</strong> by symptom, command, or service name.</li><li>Suggest missing fields such as impacted service, likely action, owner, and time spent.</li></ul></div>
+          <div class="min-box"><h3>Separate Fact From Guess</h3><ul><li>Label information as confirmed, likely, or unknown.</li><li>Show the evidence source: <strong>JIRA</strong>, <strong>Icinga</strong>, <strong>SOP</strong>, logs, CI/CD, or resolver comment.</li><li>Never turn an unvalidated guess into automation.</li></ul></div>
+          <div class="min-box"><h3>Improve The Next Ticket</h3><ul><li>Ask the resolver only for the missing vital information.</li><li>Draft a clean resolution summary for review.</li><li>Write validated context back to <strong>JIRA</strong> and the improvement backlog.</li></ul></div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>How To Identify Toil KPIs And Calculate Reduction</h2>
+        <div class="min-grid">
+          <div class="min-box"><h3>Identify KPI Candidates</h3><ul><li>Start from repeated <strong>JIRA</strong> tickets and requests.</li><li>Add recurring <strong>Icinga</strong> alerts and noisy checks.</li><li>Map each item to the related <strong>SOP</strong> and manual actions.</li><li>Keep KPIs measurable before and after improvement.</li></ul></div>
+          <div class="min-box"><h3>Build The Baseline</h3><ul><li>Ticket volume per month.</li><li>Average resolution time.</li><li>Manual time spent per ticket.</li><li>Alert count and alert duration.</li><li>Number of <strong>SOP</strong> executions.</li><li>Reopen rate or failed automation rate.</li></ul></div>
+          <div class="min-box"><h3>Calculate Reduction</h3><ul><li>Use the same KPI before and after the change.</li><li>Compare the same period length, such as 30 days vs 30 days.</li><li>Track monthly to avoid one-time noise.</li><li>Confirm results with the service owner.</li></ul></div>
+        </div>
+        <div class="formula">Reduction % = (Baseline - Current) / Baseline x 100</div>
+      </section>
+
+      <section class="section">
+        <h2>Recommended KPI Set For Toil Reduction</h2>
+        <div class="min-grid">
+          <div class="min-box"><h3>Demand KPIs</h3><ul><li><strong>JIRA</strong> tickets per toil category.</li><li>Repeated requests per service.</li><li>Mean time to resolve.</li><li>Waiting time between handoffs.</li><li>Self-service adoption rate.</li></ul></div>
+          <div class="min-box"><h3>Operational KPIs</h3><ul><li><strong>Icinga</strong> alerts per service.</li><li>Noisy alert rate.</li><li>Mean time to acknowledge.</li><li>Mean time to recover.</li><li>After-hours interruptions.</li></ul></div>
+          <div class="min-box"><h3>Automation KPIs</h3><ul><li><strong>SOP</strong> executions replaced by automation.</li><li>Manual steps removed.</li><li>Automation success rate.</li><li>Automation rollback rate.</li><li>Estimated hours saved per month.</li></ul></div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span>Implementation:</span> these steps can be embedded into the bot Denis created, so it can classify demand, enrich weak incidents, calculate toil reduction KPIs, suggest next actions, and prepare validated automation candidates.
+    </footer>
+  </article>
+</body>
+</html>
