@@ -4,11 +4,11 @@
 
 # Platform Engineering: Reduce Toil with AI
 
-A polished, single-page infographic showing how Platform Engineering can reduce repetitive operational work using **JIRA**, **Icinga**, **SOPs**, AI-assisted analysis, KPI tracking, and human validation.
+A single-page guide showing how Platform Engineering can reduce repetitive operational work using **JIRA**, **Icinga**, **SOPs**, AI-assisted analysis, KPI tracking, and human validation.
 
 ## Live Site
 
-[Open the infographic](https://mathias-wiederhirn.github.io/platform-engineering-toil-ai-site/)
+[Open the site](https://mathias-wiederhirn.github.io/platform-engineering-toil-ai-site/)
 
 ## What It Covers
 
@@ -59,4 +59,5 @@ Platform teams that want to move from reactive support work to measurable produc
 - better developer experience
 - clearer automation candidates
 - measurable toil reduction over time
+
 
