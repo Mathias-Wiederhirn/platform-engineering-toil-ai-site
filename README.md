@@ -53,12 +53,12 @@ Example:
 
 Platform teams that want to move from reactive support work to measurable productized services:
 
-- fewer repeated **JIRA** tickets
-- fewer noisy **Icinga** alerts
-- fewer manual **SOP** executions
-- better IT experience
-- clearer automation candidates
-- measurable toil reduction over time
+- Fewer repeated **JIRA** tickets
+- Fewer noisy **Icinga** alerts
+- Fewer manual **SOP** executions
+- Better IT experience
+- Clearer automation candidates
+- Measurable toil reduction over time
 
 
 
