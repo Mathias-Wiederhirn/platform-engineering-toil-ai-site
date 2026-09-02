@@ -234,56 +234,56 @@
           <div class="badge">1</div>
           <div class="card">
             <div><h2>Identify Repetitive Manual Work</h2><h3>How To Do It</h3><ul><li>Export <strong>JIRA</strong> tickets from the last 3 to 6 months.</li><li>Export recurring <strong>Icinga</strong> alerts.</li><li>List <strong>SOPs</strong> that are executed often.</li></ul></div>
-            <div class="process"><strong>AI Process: Toil Detection</strong>Groups tickets, alerts, and SOPs that describe the same recurring problem. Creates families such as access, certificates, monitoring, environment, deployment, firewall, and database. <strong>Denis tool integration:</strong> ingest <strong>JIRA</strong> incidents, matching <strong>Icinga</strong> alerts, and linked <strong>SOPs</strong> to show recurring incident families.</div>
-            <div class="output"><strong>Expected Output</strong>Toil inventory: topic, volume, impacted service, affected team, data source, and linked SOP.</div>
+            <div class="process"><strong>AI Process: Toil Detection</strong>Groups tickets, alerts, and SOPs that describe the same recurring problem. Creates families such as access, certificates, monitoring, environment, deployment, firewall, and database.</div>
+            <div class="output"><strong>Denis tool integration</strong>Keep the expected output: toil inventory with topic, volume, impacted service, affected team, data source, and linked SOP. Denis can ingest <strong>JIRA</strong> incidents, matching <strong>Icinga</strong> alerts, and linked <strong>SOPs</strong> to show recurring incident families.</div>
           </div>
         </div>
         <div class="step">
           <div class="badge">2</div>
           <div class="card">
             <div><h2>Measure Frequency And Impact</h2><h3>How To Do It</h3><ul><li>Count <strong>JIRA</strong> tickets by topic.</li><li>Measure resolution time and reopened tickets.</li><li>Measure <strong>Icinga</strong> alert duration and recurrence.</li></ul></div>
-            <div class="process"><strong>AI Process: Scoring And Prioritization</strong>Calculates a simple score: volume + time lost + risk + user impact + SOP complexity. High-score items become the first candidates. <strong>Denis tool integration:</strong> rank incident families and display which ones create the most toil.</div>
-            <div class="output"><strong>Expected Output</strong>Top 10 topics to automate or standardize first.</div>
+            <div class="process"><strong>AI Process: Scoring And Prioritization</strong>Calculates a simple score: volume + time lost + risk + user impact + SOP complexity. High-score items become the first candidates.</div>
+            <div class="output"><strong>Denis tool integration</strong>Keep the expected output: top 10 topics to automate or standardize first. Denis can rank incident families and display which ones create the most toil.</div>
           </div>
         </div>
         <div class="step">
           <div class="badge">3</div>
           <div class="card">
             <div><h2>Standardize Runbooks And Interfaces</h2><h3>How To Do It</h3><ul><li>Compare similar <strong>SOPs</strong>.</li><li>Define required fields.</li><li>Choose standards for naming, owner, tags, and thresholds.</li></ul></div>
-            <div class="process"><strong>AI Process: Golden Path Design</strong>Turns a family of tickets and SOPs into a standard path: request form, runbook, validation criteria, approval conditions, and rollback. <strong>Denis tool integration:</strong> propose the minimum required fields and the standard resolution path for each recurring incident type.</div>
-            <div class="output"><strong>Expected Output</strong>Golden path ready to publish in the platform catalog.</div>
+            <div class="process"><strong>AI Process: Golden Path Design</strong>Turns a family of tickets and SOPs into a standard path: request form, runbook, validation criteria, approval conditions, and rollback.</div>
+            <div class="output"><strong>Denis tool integration</strong>Keep the expected output: golden path ready to publish in the platform catalog. Denis can propose the minimum required fields and the standard resolution path for each recurring incident type.</div>
           </div>
         </div>
         <div class="step">
           <div class="badge">4</div>
           <div class="card">
             <div><h2>Automate Safe Repeatable Actions</h2><h3>How To Do It</h3><ul><li>Select stable, well-understood <strong>SOPs</strong>.</li><li>Start with low-risk actions.</li><li>Add validation, logs, approvals, and rollback.</li></ul></div>
-            <div class="process"><strong>AI Process: SOP-To-Automation</strong>Converts SOP steps into draft Ansible, Terraform, scripts, or CI/CD pipelines. Flags sensitive actions for human validation. <strong>Denis tool integration:</strong> turn validated resolution steps into automation candidates with required checks and rollback notes.</div>
-            <div class="output"><strong>Expected Output</strong>Versioned automation draft, tested and reviewed by a human.</div>
+            <div class="process"><strong>AI Process: SOP-To-Automation</strong>Converts SOP steps into draft Ansible, Terraform, scripts, or CI/CD pipelines. Flags sensitive actions for human validation.</div>
+            <div class="output"><strong>Denis tool integration</strong>Keep the expected output: versioned automation draft, tested and reviewed by a human. Denis can turn validated resolution steps into automation candidates with required checks and rollback notes.</div>
           </div>
         </div>
         <div class="step">
           <div class="badge">5</div>
           <div class="card">
             <div><h2>Integrate Tools And Data Flows</h2><h3>How To Do It</h3><ul><li>Connect <strong>JIRA</strong>, <strong>Icinga</strong>, CI/CD, and <strong>SOP</strong> documentation.</li><li>Link ticket, alert, service, and deployment.</li><li>Write automation status back to <strong>JIRA</strong>.</li></ul></div>
-            <div class="process"><strong>AI Process: Correlation And Enrichment</strong>Rebuilds the timeline: ticket opened, Icinga alert, recent deployment, logs, metrics, SOP used, and action applied. <strong>Denis tool integration:</strong> show the evidence trail behind each proposed resolution.</div>
-            <div class="output"><strong>Expected Output</strong>Enriched incident context, likely cause, and available evidence.</div>
+            <div class="process"><strong>AI Process: Correlation And Enrichment</strong>Rebuilds the timeline: ticket opened, Icinga alert, recent deployment, logs, metrics, SOP used, and action applied.</div>
+            <div class="output"><strong>Denis tool integration</strong>Keep the expected output: enriched incident context, likely cause, and available evidence. Denis can show the evidence trail behind each proposed resolution.</div>
           </div>
         </div>
         <div class="step">
           <div class="badge">6</div>
           <div class="card">
             <div><h2>Add Observability And Feedback Loops</h2><h3>How To Do It</h3><ul><li>Track noisy <strong>Icinga</strong> alerts and recurring incidents.</li><li>Measure automation success, failure, and duration.</li><li>Update <strong>SOPs</strong> and <strong>Icinga</strong> thresholds after incidents.</li></ul></div>
-            <div class="process"><strong>AI Process: Feedback Analysis</strong>Detects whether automation is really reducing toil. Suggests Icinga thresholds, SLO controls, and runbook improvements. <strong>Denis tool integration:</strong> learn from accepted and rejected resolution proposals to improve future recommendations.</div>
-            <div class="output"><strong>Expected Output</strong>Dashboard: avoided tickets, reduced alerts, time saved, and failures to fix.</div>
+            <div class="process"><strong>AI Process: Feedback Analysis</strong>Detects whether automation is really reducing toil. Suggests Icinga thresholds, SLO controls, and runbook improvements.</div>
+            <div class="output"><strong>Denis tool integration</strong>Keep the expected output: dashboard with avoided tickets, reduced alerts, time saved, and failures to fix. Denis can learn from accepted and rejected resolution proposals to improve future recommendations.</div>
           </div>
         </div>
         <div class="step">
           <div class="badge">7</div>
           <div class="card">
             <div><h2>Continuously Improve And Retire Toil</h2><h3>How To Do It</h3><ul><li>Review top <strong>JIRA</strong> tickets and top <strong>Icinga</strong> alerts every month.</li><li>Remove obsolete <strong>SOPs</strong>.</li><li>Feed the Platform Engineering backlog.</li></ul></div>
-            <div class="process"><strong>AI Process: Continuous Improvement</strong>Produces the monthly toil report, detects new patterns, proposes the next golden paths, and estimates potential value. <strong>Denis tool integration:</strong> create monthly improvement suggestions from recurring incidents, noisy alerts, and manual SOP usage.</div>
-            <div class="output"><strong>Expected Output</strong>Prioritized backlog: standardize, self-service, automate, improve alerting, or retire procedure.</div>
+            <div class="process"><strong>AI Process: Continuous Improvement</strong>Produces the monthly toil report, detects new patterns, proposes the next golden paths, and estimates potential value.</div>
+            <div class="output"><strong>Denis tool integration</strong>Keep the expected output: prioritized backlog to standardize, create self-service, automate, improve alerting, or retire a procedure. Denis can create monthly improvement suggestions from recurring incidents, noisy alerts, and manual SOP usage.</div>
           </div>
         </div>
       </section>
