@@ -56,7 +56,7 @@ Platform teams that want to move from reactive support work to measurable produc
 - fewer repeated **JIRA** tickets
 - fewer noisy **Icinga** alerts
 - fewer manual **SOP** executions
-- better developer experience
+- better IT experience
 - clearer automation candidates
 - measurable toil reduction over time
 
