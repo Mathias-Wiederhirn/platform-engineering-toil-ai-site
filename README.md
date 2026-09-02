@@ -4,7 +4,7 @@
 
 # Platform Engineering: Reduce Toil with AI
 
-A single-page guide showing how Platform Engineering can reduce repetitive operational work using **JIRA**, **Icinga**, **SOPs**, AI-assisted analysis, KPI tracking, and human validation.
+A single-page guide showing how Platform Engineering can reduce repetitive operational work using **JIRA**, **Icinga**, **SOPs**, the Denis tool, AI-assisted analysis, KPI tracking, and human validation.
 
 ## Live Site
 
@@ -17,11 +17,11 @@ A single-page guide showing how Platform Engineering can reduce repetitive opera
 - Minimum vital information required from each source
 - What AI can do when incident data is incomplete
 - How to define toil KPIs and calculate reduction percentage
-- How these steps can be embedded into Denis's bot
+- How Nathan can integrate these steps into the Denis tool
 
 ## Core Idea
 
-Platform Engineering reduces toil when repeated tickets, recurring alerts, and manual procedures are transformed into reliable golden paths, self-service workflows, and validated automation.
+Platform Engineering reduces toil when repeated tickets, recurring alerts, and manual procedures are transformed into reliable golden paths, self-service workflows, validated automation, and resolution proposals inside the Denis tool.
 
 ## Toil Reduction Formula
 
@@ -42,11 +42,11 @@ Example:
 
 ```text
 .
-├── index.html
-├── README.md
-├── .nojekyll
-└── assets/
-    └── platform-engineering-toil-ai-hero.png
+|-- index.html
+|-- README.md
+|-- .nojekyll
+`-- assets/
+    `-- platform-engineering-toil-ai-hero.png
 ```
 
 ## Built For
@@ -59,5 +59,6 @@ Platform teams that want to move from reactive support work to measurable produc
 - better developer experience
 - clearer automation candidates
 - measurable toil reduction over time
+
 
 
