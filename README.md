@@ -6,7 +6,7 @@
 
 A single-page guide showing how Platform Engineering can reduce repetitive operational work using **JIRA**, **Icinga**, **SOPs**, the Denis tool, AI-assisted analysis, KPI tracking, and human validation.
 
-## Live Site
+## Live Pages
 
 [Open the site](https://mathias-wiederhirn.github.io/platform-engineering-toil-ai-site/)
 
@@ -69,3 +69,4 @@ Platform teams that want to move from reactive support work to measurable produc
 - Better IT experience
 - Clearer automation candidates
 - Measurable toil reduction over time
+
