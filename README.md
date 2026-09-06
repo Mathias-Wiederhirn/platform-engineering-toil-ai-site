@@ -10,6 +10,8 @@ A single-page guide showing how Platform Engineering can reduce repetitive opera
 
 [Open the site](https://mathias-wiederhirn.github.io/platform-engineering-toil-ai-site/)
 
+[Open the TOIL KPI next steps page](https://mathias-wiederhirn.github.io/platform-engineering-toil-ai-site/toil-kpi-next-steps-infographic.html)
+
 ## What It Covers
 
 - A 7-step method to identify, measure, standardize, automate, and continuously reduce toil
@@ -43,8 +45,16 @@ Example:
 ```text
 .
 |-- index.html
+|-- toil-kpi-next-steps-infographic.html
 |-- README.md
 |-- .nojekyll
+|-- aws-icons/
+|   |-- api-gateway.svg
+|   |-- aws-logo.svg
+|   |-- bedrock.svg
+|   |-- lambda.svg
+|   |-- s3.svg
+|   `-- step-functions.svg
 `-- assets/
     `-- platform-engineering-toil-ai-hero.png
 ```
@@ -59,6 +69,3 @@ Platform teams that want to move from reactive support work to measurable produc
 - Better IT experience
 - Clearer automation candidates
 - Measurable toil reduction over time
-
-
-

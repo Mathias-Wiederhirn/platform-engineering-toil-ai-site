@@ -1,0 +1,986 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TOIL KPI Integration - Next Steps</title>
+  <style>
+    :root {
+      --ink: #172635;
+      --muted: #5d6e7a;
+      --line: #dce6e8;
+      --paper: #f7f9f9;
+      --white: #ffffff;
+      --teal: #1f8980;
+      --blue: #4178a0;
+      --amber: #d9912f;
+      --green: #469162;
+      --red: #b24f49;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: Aptos, "Segoe UI", Arial, sans-serif;
+    }
+
+    .page {
+      width: min(1180px, calc(100vw - 32px));
+      margin: 24px auto;
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    header {
+      padding: 30px 36px 24px;
+      background: linear-gradient(135deg, #ffffff 0%, #eef6f5 100%);
+      border-bottom: 1px solid var(--line);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 42px;
+      line-height: 1.05;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      margin-top: 12px;
+      max-width: 880px;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.45;
+    }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      padding: 22px 36px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .summary-box {
+      border-left: 6px solid var(--teal);
+      background: #fbfdfd;
+      padding: 14px 16px;
+      min-height: 96px;
+    }
+
+    .summary-box:nth-child(2) {
+      border-color: var(--amber);
+    }
+
+    .summary-box:nth-child(3) {
+      border-color: var(--green);
+    }
+
+    .label {
+      font-weight: 800;
+      font-size: 15px;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+
+    .summary-box p,
+    .step p,
+    .formula p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.35;
+    }
+
+    main {
+      padding: 28px 36px 34px;
+    }
+
+    .section-title {
+      margin: 0 0 18px;
+      font-size: 26px;
+      line-height: 1.15;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      align-items: stretch;
+    }
+
+    .step {
+      position: relative;
+      min-height: 254px;
+      padding: 18px 13px 15px;
+      border: 1px solid var(--line);
+      border-top: 8px solid var(--teal);
+      background: var(--white);
+    }
+
+    .step:nth-child(2) { border-top-color: var(--blue); }
+    .step:nth-child(3) { border-top-color: var(--amber); }
+    .step:nth-child(4) { border-top-color: var(--green); }
+    .step:nth-child(5) { border-top-color: var(--red); }
+    .step:nth-child(6) { border-top-color: var(--blue); }
+    .step:nth-child(7) { border-top-color: var(--teal); }
+
+    .number {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 12px;
+      border-radius: 50%;
+      background: var(--ink);
+      color: var(--white);
+      font-weight: 800;
+      font-size: 16px;
+    }
+
+    h2 {
+      margin: 0 0 10px;
+      font-size: 18px;
+      line-height: 1.15;
+    }
+
+    .example {
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px solid var(--line);
+      color: var(--ink);
+      font-size: 14px;
+      line-height: 1.3;
+    }
+
+
+    .score-step {
+      grid-column: span 2;
+    }
+
+    .score-table {
+      width: 100%;
+      margin-top: 12px;
+      border-collapse: collapse;
+      font-size: 12px;
+      line-height: 1.2;
+    }
+
+    .score-table th,
+    .score-table td {
+      border: 1px solid var(--line);
+      padding: 6px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .score-table th {
+      background: var(--ink);
+      color: var(--white);
+      font-size: 11px;
+    }
+
+    .formula .example strong {
+      display: inline;
+      margin-bottom: 0;
+      font-size: inherit;
+    }
+    .formula-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-top: 28px;
+    }
+
+    .formula {
+      padding: 18px 20px;
+      border: 1px solid var(--line);
+      background: #fbfdfd;
+    }
+
+    .formula.toil-score-formula {
+      grid-column: 1 / -1;
+    }
+
+    .formula strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 18px;
+    }
+
+
+    .infra {
+      margin-top: 28px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      background: #fbfdfd;
+    }
+
+    .infra h2 {
+      margin: 0 0 16px;
+      font-size: 24px;
+    }
+
+    .infra-flow {
+      display: grid;
+      grid-template-columns: 1fr 0.35fr 1.2fr 0.35fr 1.25fr;
+      gap: 12px;
+      align-items: stretch;
+    }
+
+    .infra-box {
+      border: 1px solid var(--line);
+      border-top: 6px solid var(--teal);
+      background: var(--white);
+      padding: 14px;
+      min-height: 160px;
+    }
+
+    .infra-box.cloud { border-top-color: var(--blue); }
+    .infra-box.aws { border-top-color: var(--amber); }
+    .infra-box.tool { border-top-color: var(--green); }
+
+    .infra-title {
+      font-weight: 800;
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+
+    .infra-box ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.35;
+    }
+
+    .infra-arrow {
+      display: grid;
+      place-items: center;
+      color: var(--muted);
+      font-weight: 800;
+      font-size: 24px;
+    }
+
+    .infra-note {
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.35;
+    }
+
+    .aws-logo {
+      width: 86px;
+      height: auto;
+      display: block;
+      margin-bottom: 12px;
+    }
+
+    .aws-schema {
+      display: grid;
+      grid-template-columns: 1fr 0.28fr 1.45fr 0.28fr 1fr;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .source-stack {
+      display: grid;
+      gap: 12px;
+    }
+
+    .source-node,
+    .aws-node,
+    .tool-node {
+      border: 1px solid var(--line);
+      background: var(--white);
+      padding: 14px;
+    }
+
+    .source-node {
+      border-left: 6px solid var(--teal);
+    }
+
+    .source-node.cloud-source {
+      border-left-color: var(--blue);
+    }
+
+    .aws-boundary {
+      border: 2px solid var(--amber);
+      background: #fffaf2;
+      padding: 16px;
+    }
+
+
+    .aws-service-flow {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(120px, 1fr));
+      gap: 10px;
+      align-items: stretch;
+    }
+
+    .aws-flow-step {
+      position: relative;
+      border: 1px solid var(--line);
+      background: var(--white);
+      padding: 12px;
+      min-height: 118px;
+    }
+
+    .aws-flow-step:not(:last-child)::after {
+      content: ">";
+      position: absolute;
+      right: -12px;
+      top: 42px;
+      color: var(--muted);
+      font-weight: 800;
+      font-size: 18px;
+      z-index: 2;
+    }
+
+    .flow-label {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    @media (max-width: 980px) {
+      .aws-service-flow {
+        grid-template-columns: 1fr;
+      }
+
+      .aws-flow-step:not(:last-child)::after {
+        right: 50%;
+        top: auto;
+        bottom: -18px;
+        transform: rotate(90deg);
+      }
+    }
+    .aws-services {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+
+    .aws-icon {
+      width: 42px;
+      height: 42px;
+      object-fit: contain;
+      display: block;
+      margin-bottom: 8px;
+    }
+    .aws-node {
+      min-height: 70px;
+    }
+
+    .tool-node {
+      border-left: 6px solid var(--green);
+      min-height: 220px;
+    }
+
+    .node-title {
+      font-weight: 800;
+      margin-bottom: 6px;
+      font-size: 15px;
+    }
+
+    .node-text {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .schema-arrow {
+      color: var(--muted);
+      font-size: 30px;
+      font-weight: 800;
+      text-align: center;
+    }
+
+    @media (max-width: 980px) {
+      .aws-schema {
+        grid-template-columns: 1fr;
+      }
+
+      .schema-arrow {
+        transform: rotate(90deg);
+      }
+    }
+
+    .implementation-callout {
+      display: grid;
+      grid-template-columns: 210px 1fr;
+      gap: 18px;
+      align-items: center;
+      padding: 20px 24px;
+      background: var(--ink);
+      color: var(--white);
+      border-radius: 8px;
+      border-left: 10px solid var(--amber);
+    }
+
+    .implementation-callout strong {
+      color: var(--white);
+      font-size: 20px;
+    }
+
+    .implementation-callout span {
+      color: #dfe9ea;
+      font-size: 17px;
+      line-height: 1.4;
+    }
+
+    @media (max-width: 640px) {
+      .implementation-callout {
+        grid-template-columns: 1fr;
+      }
+    }
+    footer {
+      padding: 18px 36px 24px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.4;
+    }
+
+    @media (max-width: 980px) {
+      .summary,
+  
+    .score-step {
+      grid-column: span 2;
+    }
+
+    .score-table {
+      width: 100%;
+      margin-top: 12px;
+      border-collapse: collapse;
+      font-size: 12px;
+      line-height: 1.2;
+    }
+
+    .score-table th,
+    .score-table td {
+      border: 1px solid var(--line);
+      padding: 6px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .score-table th {
+      background: var(--ink);
+      color: var(--white);
+      font-size: 11px;
+    }
+
+    .formula .example strong {
+      display: inline;
+      margin-bottom: 0;
+      font-size: inherit;
+    }
+    .formula-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .steps {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .score-step {
+        grid-column: span 2;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .page {
+        width: 100%;
+        margin: 0;
+        border-radius: 0;
+      }
+
+      header,
+      .summary,
+      main,
+  
+    .infra {
+      margin-top: 28px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      background: #fbfdfd;
+    }
+
+    .infra h2 {
+      margin: 0 0 16px;
+      font-size: 24px;
+    }
+
+    .infra-flow {
+      display: grid;
+      grid-template-columns: 1fr 0.35fr 1.2fr 0.35fr 1.25fr;
+      gap: 12px;
+      align-items: stretch;
+    }
+
+    .infra-box {
+      border: 1px solid var(--line);
+      border-top: 6px solid var(--teal);
+      background: var(--white);
+      padding: 14px;
+      min-height: 160px;
+    }
+
+    .infra-box.cloud { border-top-color: var(--blue); }
+    .infra-box.aws { border-top-color: var(--amber); }
+    .infra-box.tool { border-top-color: var(--green); }
+
+    .infra-title {
+      font-weight: 800;
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+
+    .infra-box ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.35;
+    }
+
+    .infra-arrow {
+      display: grid;
+      place-items: center;
+      color: var(--muted);
+      font-weight: 800;
+      font-size: 24px;
+    }
+
+    .infra-note {
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.35;
+    }
+
+    .aws-logo {
+      width: 86px;
+      height: auto;
+      display: block;
+      margin-bottom: 12px;
+    }
+
+    .aws-schema {
+      display: grid;
+      grid-template-columns: 1fr 0.28fr 1.45fr 0.28fr 1fr;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .source-stack {
+      display: grid;
+      gap: 12px;
+    }
+
+    .source-node,
+    .aws-node,
+    .tool-node {
+      border: 1px solid var(--line);
+      background: var(--white);
+      padding: 14px;
+    }
+
+    .source-node {
+      border-left: 6px solid var(--teal);
+    }
+
+    .source-node.cloud-source {
+      border-left-color: var(--blue);
+    }
+
+    .aws-boundary {
+      border: 2px solid var(--amber);
+      background: #fffaf2;
+      padding: 16px;
+    }
+
+
+    .aws-service-flow {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(120px, 1fr));
+      gap: 10px;
+      align-items: stretch;
+    }
+
+    .aws-flow-step {
+      position: relative;
+      border: 1px solid var(--line);
+      background: var(--white);
+      padding: 12px;
+      min-height: 118px;
+    }
+
+    .aws-flow-step:not(:last-child)::after {
+      content: ">";
+      position: absolute;
+      right: -12px;
+      top: 42px;
+      color: var(--muted);
+      font-weight: 800;
+      font-size: 18px;
+      z-index: 2;
+    }
+
+    .flow-label {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    @media (max-width: 980px) {
+      .aws-service-flow {
+        grid-template-columns: 1fr;
+      }
+
+      .aws-flow-step:not(:last-child)::after {
+        right: 50%;
+        top: auto;
+        bottom: -18px;
+        transform: rotate(90deg);
+      }
+    }
+    .aws-services {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+
+    .aws-icon {
+      width: 42px;
+      height: 42px;
+      object-fit: contain;
+      display: block;
+      margin-bottom: 8px;
+    }
+    .aws-node {
+      min-height: 70px;
+    }
+
+    .tool-node {
+      border-left: 6px solid var(--green);
+      min-height: 220px;
+    }
+
+    .node-title {
+      font-weight: 800;
+      margin-bottom: 6px;
+      font-size: 15px;
+    }
+
+    .node-text {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .schema-arrow {
+      color: var(--muted);
+      font-size: 30px;
+      font-weight: 800;
+      text-align: center;
+    }
+
+    @media (max-width: 980px) {
+      .aws-schema {
+        grid-template-columns: 1fr;
+      }
+
+      .schema-arrow {
+        transform: rotate(90deg);
+      }
+    }
+
+    .implementation-callout {
+      display: grid;
+      grid-template-columns: 210px 1fr;
+      gap: 18px;
+      align-items: center;
+      padding: 20px 24px;
+      background: var(--ink);
+      color: var(--white);
+      border-radius: 8px;
+      border-left: 10px solid var(--amber);
+    }
+
+    .implementation-callout strong {
+      color: var(--white);
+      font-size: 20px;
+    }
+
+    .implementation-callout span {
+      color: #dfe9ea;
+      font-size: 17px;
+      line-height: 1.4;
+    }
+
+    @media (max-width: 640px) {
+      .implementation-callout {
+        grid-template-columns: 1fr;
+      }
+    }
+    footer {
+        padding-left: 18px;
+        padding-right: 18px;
+      }
+
+      h1 {
+        font-size: 32px;
+      }
+
+      .steps {
+        grid-template-columns: 1fr;
+      }
+
+      .score-step {
+        grid-column: span 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <h1>TOIL KPI Integration Next Steps Proposition</h1>
+      <div class="subtitle">
+        Next steps to add a measurable TOIL KPI into the incident analysis tool
+      </div>
+    </header>
+
+    <section class="summary">
+      <div class="summary-box">
+        <div class="label">Goal</div>
+        <p>Measure and prioritize repetitive manual incident work<br><br><strong>How:</strong> Group recurring incidents and calculate a TOIL score for each family</p>
+      </div>
+      <div class="summary-box">
+        <div class="label">Inputs</div>
+        <p><strong>JIRA</strong> incidents, <strong>Icinga</strong> alerts and <strong>SOPs</strong> manual steps<br><br><strong>How:</strong> Connect incidents, alerts and SOP steps by service and time window</p>
+      </div>
+      <div class="summary-box">
+        <div class="label">Output</div>
+        <p>TOIL score, reduction KPI and ranked improvement backlog<br><br><strong>How:</strong> Display score, KPI trend and next actions in the incident analysis tool</p>
+      </div>
+    </section>
+
+    <main>
+      <h2 class="section-title">Next Steps</h2>
+
+      <section class="steps">
+        <article class="step">
+          <div class="number">1</div>
+          <h2>Choose Pilot Scope</h2>
+          <p>Select 2 or 3 recurring incident families</p>
+          <div class="example"><strong>Example:</strong> Disk full alerts on production servers</div>
+        </article>
+
+        <article class="step">
+          <div class="number">2</div>
+          <h2>Define Data Fields</h2>
+          <p>List the minimum fields required from each source. ⚠️ If data is missing, flag it and use a lower confidence score</p>
+          <div class="example"><strong>Example:</strong> Service, alert name, timestamp, resolution, SOP name</div>
+        </article>
+
+        <article class="step">
+          <div class="number">3</div>
+          <h2>Correlate Evidence</h2>
+          <p>Link incidents, alerts and SOPs into the same incident family</p>
+          <div class="example"><strong>Example:</strong> INC about stopped service, Icinga service down alert and service restart SOP</div>
+        </article>
+
+        <article class="step">
+          <div class="number">4</div>
+          <h2>Score TOIL</h2>
+          <p>Rate each TOIL dimension from 1 to 5: Frequency, Effort, Risk, Repeatability and Confidence</p>
+
+          <div class="example"><strong>Example:</strong> See TOIL Score Table</div>
+        </article>
+
+        <article class="step">
+          <div class="number">5</div>
+          <h2>Validate Score</h2>
+          <p>Validate the human work effort, score and proposed resolution</p>
+          <div class="example"><strong>Example:</strong> Human work effort confirmed at 45 minutes</div>
+        </article>
+
+        <article class="step">
+          <div class="number">6</div>
+          <h2>Track KPI</h2>
+          <p>Compare baseline TOIL hours with current TOIL hours after improvement</p>
+          <div class="example"><strong>Example:</strong> See Reduction Calcul</div>
+        </article>
+
+        <article class="step">
+          <div class="number">7</div>
+          <h2>Create Backlog</h2>
+          <p>Use high-score items to improve SOPs, create self-service actions or prepare automation backlog</p>
+          <div class="example"><strong>Example:</strong> Self-service restart for a recurring service failure</div>
+        </article>
+      </section>
+
+      <section class="formula-grid">
+        <div class="formula toil-score-formula">
+          <strong>TOIL Score Table</strong>
+          <p>Rate each dimension from 1 to 5, then add the values. Maximum score: 25</p>
+          <table class="score-table" aria-label="TOIL score table">
+            <thead>
+              <tr>
+                <th>Dimension</th>
+                <th>1</th>
+                <th>2</th>
+                <th>3</th>
+                <th>4</th>
+                <th>5</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Frequency</td><td>Rare</td><td>Monthly</td><td>Weekly</td><td>Several times/week</td><td>Daily</td></tr>
+              <tr><td>Effort</td><td>Few minutes</td><td>15-30 min</td><td>30-60 min</td><td>1-2h</td><td>More than 2h</td></tr>
+              <tr><td>Risk</td><td>Low impact</td><td>Minor impact</td><td>Service degraded</td><td>Major impact</td><td>SLA risk</td></tr>
+              <tr><td>Repeatability</td><td>Unique case</td><td>Similar symptom</td><td>Similar steps</td><td>Same fix often</td><td>Same SOP</td></tr>
+              <tr><td>Confidence</td><td>Weak data</td><td>One source</td><td>Partial match</td><td>Two sources linked</td><td>Full evidence</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="formula">
+          <strong>Priority Score</strong>
+          <p>TOIL score x confidence factor.</p><div class="example">Use it to rank which TOIL items should be improved first<br><br><strong>High:</strong> Automate or self-service<br><strong>Medium:</strong> Improve SOP or ticket quality<br><strong>Low:</strong> Monitor only</div>
+        </div>
+        <div class="formula">
+          <strong>Reduction Calcul</strong>
+          <p>(Baseline hours - Current hours) / Baseline hours x 100</p>
+        </div>
+      </section>
+
+      <section class="infra" aria-label="AWS infrastructure option">
+        <h2>AWS Infrastructure Option</h2>
+        <div class="aws-schema">
+          <div class="source-stack">
+            <div class="source-node">
+              <div class="node-title">On-Premise Sources</div>
+              <div class="node-text">JIRA incidents<br>Icinga alerts<br>SOPs documents</div>
+            </div>
+            <div class="source-node cloud-source">
+              <div class="node-title">Cloud Sources</div>
+              <div class="node-text">CloudWatch alerts<br>Cloud JIRA export<br>SOPs from S3 or SharePoint export</div>
+            </div>
+          </div>
+          <div class="schema-arrow">&gt;</div>
+          <div class="aws-boundary">
+            <img class="aws-logo" src="aws-icons/aws-logo.svg" alt="AWS logo">
+            <div class="aws-service-flow">
+              <div class="aws-flow-step">
+                <img class="aws-icon" src="aws-icons/api-gateway.svg" alt="Amazon API Gateway icon">
+                <div class="node-title">Amazon API Gateway or VPN</div>
+                <div class="node-text">Receive incidents, alerts and SOP extracts</div>
+              </div>
+              <div class="aws-flow-step">
+                <img class="aws-icon" src="aws-icons/s3.svg" alt="Amazon S3 icon">
+                <div class="node-title">Amazon S3</div>
+                <div class="node-text">Store raw evidence and baseline files</div>
+              </div>
+              <div class="aws-flow-step">
+                <img class="aws-icon" src="aws-icons/step-functions.svg" alt="AWS Step Functions icon">
+                <div class="node-title">AWS Step Functions</div>
+                <div class="node-text">Run the TOIL KPI workflow</div>
+              </div>
+              <div class="aws-flow-step">
+                <img class="aws-icon" src="aws-icons/lambda.svg" alt="AWS Lambda icon">
+                <div class="node-title">AWS Lambda</div>
+                <div class="node-text">Correlate evidence and calculate scores</div>
+              </div>
+              <div class="aws-flow-step">
+                <img class="aws-icon" src="aws-icons/bedrock.svg" alt="Amazon Bedrock icon">
+                <div class="node-title">Amazon Bedrock</div>
+                <div class="node-text">Support incident analysis and recommendations</div>
+              </div>
+            </div>
+            <div class="flow-label">Flow: ingest sources, store evidence, orchestrate scoring, calculate TOIL KPI, propose prioritized actions.</div>          </div>
+          <div class="schema-arrow">&gt;</div>
+          <div class="tool-node">
+            <div class="node-title">Incident Analysis Tool</div>
+            <div class="node-text">TOIL score per incident family<br>Priority score<br>Reduction KPI<br>Human validation result<br>Improvement backlog</div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="implementation-callout"><strong>First implementation:</strong><span>Add TOIL score fields, display the evidence behind each score and require human validation before any automation decision</span></div>
+    </footer>
+  </div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
