@@ -1,936 +1,1385 @@
 <!doctype html>
-<html lang="en">
+<html lang="fr">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>TOIL KPI Integration - Next Steps</title>
-  <style>
-    :root {
-      --ink: #172635;
-      --muted: #5d6e7a;
-      --line: #dce6e8;
-      --paper: #f7f9f9;
-      --white: #ffffff;
-      --teal: #1f8980;
-      --blue: #4178a0;
-      --amber: #d9912f;
-      --green: #469162;
-      --red: #b24f49;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background: var(--paper);
-      color: var(--ink);
-      font-family: Aptos, "Segoe UI", Arial, sans-serif;
-    }
-
-    .page {
-      width: min(1180px, calc(100vw - 32px));
-      margin: 24px auto;
-      background: var(--white);
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      overflow: hidden;
-    }
-
-    header {
-      padding: 30px 36px 24px;
-      background: linear-gradient(135deg, #ffffff 0%, #eef6f5 100%);
-      border-bottom: 1px solid var(--line);
-    }
-
-    h1 {
-      margin: 0;
-      font-size: 42px;
-      line-height: 1.05;
-      letter-spacing: 0;
-    }
-
-    .subtitle {
-      margin-top: 12px;
-      max-width: 880px;
-      color: var(--muted);
-      font-size: 18px;
-      line-height: 1.45;
-    }
-
-    .summary {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      padding: 22px 36px;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .summary-box {
-      border-left: 6px solid var(--teal);
-      background: #fbfdfd;
-      padding: 14px 16px;
-      min-height: 96px;
-    }
-
-    .summary-box:nth-child(2) {
-      border-color: var(--amber);
-    }
-
-    .summary-box:nth-child(3) {
-      border-color: var(--green);
-    }
-
-    .label {
-      font-weight: 800;
-      font-size: 15px;
-      margin-bottom: 8px;
-      text-transform: uppercase;
-    }
-
-    .summary-box p,
-    .step p,
-    .formula p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 15px;
-      line-height: 1.35;
-    }
-
-    main {
-      padding: 28px 36px 34px;
-    }
-
-    .section-title {
-      margin: 0 0 18px;
-      font-size: 26px;
-      line-height: 1.15;
-    }
-
-    .steps {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-      align-items: stretch;
-    }
-
-    .step {
-      position: relative;
-      min-height: 254px;
-      padding: 18px 13px 15px;
-      border: 1px solid var(--line);
-      border-top: 8px solid var(--teal);
-      background: var(--white);
-    }
-
-    .step:nth-child(2) { border-top-color: var(--blue); }
-    .step:nth-child(3) { border-top-color: var(--amber); }
-    .step:nth-child(4) { border-top-color: var(--green); }
-    .step:nth-child(5) { border-top-color: var(--red); }
-    .step:nth-child(6) { border-top-color: var(--blue); }
-    .step:nth-child(7) { border-top-color: var(--teal); }
-    .step:nth-child(8) { border-top-color: var(--green); }
-
-    .number {
-      width: 34px;
-      height: 34px;
-      display: grid;
-      place-items: center;
-      margin-bottom: 12px;
-      border-radius: 50%;
-      background: var(--ink);
-      color: var(--white);
-      font-weight: 800;
-      font-size: 16px;
-    }
-
-    h2 {
-      margin: 0 0 10px;
-      font-size: 18px;
-      line-height: 1.15;
-    }
-
-    .example {
-      margin-top: 12px;
-      padding-top: 10px;
-      border-top: 1px solid var(--line);
-      color: var(--ink);
-      font-size: 14px;
-      line-height: 1.3;
-    }
-
-
-    .score-step {
-      grid-column: span 2;
-    }
-
-    .score-table {
-      width: 100%;
-      margin-top: 12px;
-      border-collapse: collapse;
-      font-size: 12px;
-      line-height: 1.2;
-    }
-
-    .score-table th,
-    .score-table td {
-      border: 1px solid var(--line);
-      padding: 6px;
-      text-align: left;
-      vertical-align: top;
-    }
-
-    .score-table th {
-      background: var(--ink);
-      color: var(--white);
-      font-size: 11px;
-    }
-
-    .formula .example strong {
-      display: inline;
-      margin-bottom: 0;
-      font-size: inherit;
-    }
-    .formula-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
-      margin-top: 28px;
-    }
-
-    .formula {
-      padding: 18px 20px;
-      border: 1px solid var(--line);
-      background: #fbfdfd;
-    }
-
-    .formula.toil-score-formula {
-      grid-column: 1 / -1;
-    }
-
-    .formula strong {
-      display: block;
-      margin-bottom: 8px;
-      font-size: 18px;
-    }
-
-
-    .infra {
-      margin-top: 28px;
-      padding: 22px;
-      border: 1px solid var(--line);
-      background: #fbfdfd;
-    }
-
-    .infra h2 {
-      margin: 0 0 16px;
-      font-size: 24px;
-    }
-
-    .infra-flow {
-      display: grid;
-      grid-template-columns: 1fr 0.35fr 1.2fr 0.35fr 1.25fr;
-      gap: 12px;
-      align-items: stretch;
-    }
-
-    .infra-box {
-      border: 1px solid var(--line);
-      border-top: 6px solid var(--teal);
-      background: var(--white);
-      padding: 14px;
-      min-height: 160px;
-    }
-
-    .infra-box.cloud { border-top-color: var(--blue); }
-    .infra-box.aws { border-top-color: var(--amber); }
-    .infra-box.tool { border-top-color: var(--green); }
-
-    .infra-title {
-      font-weight: 800;
-      margin-bottom: 10px;
-      font-size: 16px;
-    }
-
-    .infra-box ul {
-      margin: 0;
-      padding-left: 18px;
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.35;
-    }
-
-    .infra-arrow {
-      display: grid;
-      place-items: center;
-      color: var(--muted);
-      font-weight: 800;
-      font-size: 24px;
-    }
-
-    .infra-note {
-      margin-top: 14px;
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.35;
-    }
-
-    .aws-logo {
-      width: 86px;
-      height: auto;
-      display: block;
-      margin-bottom: 12px;
-    }
-
-    .aws-schema {
-      display: grid;
-      grid-template-columns: 1fr 0.28fr 1.45fr 0.28fr 1fr;
-      gap: 14px;
-      align-items: center;
-    }
-
-    .source-stack {
-      display: grid;
-      gap: 12px;
-    }
-
-    .source-node,
-    .aws-node,
-    .tool-node {
-      border: 1px solid var(--line);
-      background: var(--white);
-      padding: 14px;
-    }
-
-    .source-node {
-      border-left: 6px solid var(--teal);
-    }
-
-    .source-node.cloud-source {
-      border-left-color: var(--blue);
-    }
-
-    .aws-boundary {
-      border: 2px solid var(--amber);
-      background: #fffaf2;
-      padding: 16px;
-    }
-
-
-    .aws-service-flow {
-      display: grid;
-      grid-template-columns: repeat(5, minmax(120px, 1fr));
-      gap: 10px;
-      align-items: stretch;
-    }
-
-    .aws-flow-step {
-      position: relative;
-      border: 1px solid var(--line);
-      background: var(--white);
-      padding: 12px;
-      min-height: 118px;
-    }
-
-    .aws-flow-step:not(:last-child)::after {
-      content: ">";
-      position: absolute;
-      right: -12px;
-      top: 42px;
-      color: var(--muted);
-      font-weight: 800;
-      font-size: 18px;
-      z-index: 2;
-    }
-
-    .flow-label {
-      margin-top: 12px;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.35;
-    }
-
-    @media (max-width: 980px) {
-      .aws-service-flow {
-        grid-template-columns: 1fr;
-      }
-
-      .aws-flow-step:not(:last-child)::after {
-        right: 50%;
-        top: auto;
-        bottom: -18px;
-        transform: rotate(90deg);
-      }
-    }
-    .aws-services {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-    }
-
-
-    .aws-icon {
-      width: 42px;
-      height: 42px;
-      object-fit: contain;
-      display: block;
-      margin-bottom: 8px;
-    }
-    .aws-node {
-      min-height: 70px;
-    }
-
-    .tool-node {
-      border-left: 6px solid var(--green);
-      min-height: 220px;
-    }
-
-    .node-title {
-      font-weight: 800;
-      margin-bottom: 6px;
-      font-size: 15px;
-    }
-
-    .node-text {
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.35;
-    }
-
-    .schema-arrow {
-      color: var(--muted);
-      font-size: 30px;
-      font-weight: 800;
-      text-align: center;
-    }
-
-    @media (max-width: 980px) {
-      .aws-schema {
-        grid-template-columns: 1fr;
-      }
-
-      .schema-arrow {
-        transform: rotate(90deg);
-      }
-    }
-
-    .implementation-callout {
-      display: grid;
-      grid-template-columns: 210px 1fr;
-      gap: 18px;
-      align-items: center;
-      padding: 20px 24px;
-      background: var(--ink);
-      color: var(--white);
-      border-radius: 8px;
-      border-left: 10px solid var(--amber);
-    }
-
-    .implementation-callout strong {
-      color: var(--white);
-      font-size: 20px;
-    }
-
-    .implementation-callout span {
-      color: #dfe9ea;
-      font-size: 17px;
-      line-height: 1.4;
-    }
-
-    @media (max-width: 640px) {
-      .implementation-callout {
-        grid-template-columns: 1fr;
-      }
-    }
-    footer {
-      padding: 18px 36px 24px;
-      border-top: 1px solid var(--line);
-      color: var(--muted);
-      font-size: 15px;
-      line-height: 1.4;
-    }
-
-    @media (max-width: 980px) {
-      .summary,
-  
-    .score-step {
-      grid-column: span 2;
-    }
-
-    .score-table {
-      width: 100%;
-      margin-top: 12px;
-      border-collapse: collapse;
-      font-size: 12px;
-      line-height: 1.2;
-    }
-
-    .score-table th,
-    .score-table td {
-      border: 1px solid var(--line);
-      padding: 6px;
-      text-align: left;
-      vertical-align: top;
-    }
-
-    .score-table th {
-      background: var(--ink);
-      color: var(--white);
-      font-size: 11px;
-    }
-
-    .formula .example strong {
-      display: inline;
-      margin-bottom: 0;
-      font-size: inherit;
-    }
-    .formula-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .steps {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .score-step {
-        grid-column: span 2;
-      }
-    }
-
-    @media (max-width: 640px) {
-      .page {
-        width: 100%;
-        margin: 0;
-        border-radius: 0;
-      }
-
-      header,
-      .summary,
-      main,
-  
-    .infra {
-      margin-top: 28px;
-      padding: 22px;
-      border: 1px solid var(--line);
-      background: #fbfdfd;
-    }
-
-    .infra h2 {
-      margin: 0 0 16px;
-      font-size: 24px;
-    }
-
-    .infra-flow {
-      display: grid;
-      grid-template-columns: 1fr 0.35fr 1.2fr 0.35fr 1.25fr;
-      gap: 12px;
-      align-items: stretch;
-    }
-
-    .infra-box {
-      border: 1px solid var(--line);
-      border-top: 6px solid var(--teal);
-      background: var(--white);
-      padding: 14px;
-      min-height: 160px;
-    }
-
-    .infra-box.cloud { border-top-color: var(--blue); }
-    .infra-box.aws { border-top-color: var(--amber); }
-    .infra-box.tool { border-top-color: var(--green); }
-
-    .infra-title {
-      font-weight: 800;
-      margin-bottom: 10px;
-      font-size: 16px;
-    }
-
-    .infra-box ul {
-      margin: 0;
-      padding-left: 18px;
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.35;
-    }
-
-    .infra-arrow {
-      display: grid;
-      place-items: center;
-      color: var(--muted);
-      font-weight: 800;
-      font-size: 24px;
-    }
-
-    .infra-note {
-      margin-top: 14px;
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.35;
-    }
-
-    .aws-logo {
-      width: 86px;
-      height: auto;
-      display: block;
-      margin-bottom: 12px;
-    }
-
-    .aws-schema {
-      display: grid;
-      grid-template-columns: 1fr 0.28fr 1.45fr 0.28fr 1fr;
-      gap: 14px;
-      align-items: center;
-    }
-
-    .source-stack {
-      display: grid;
-      gap: 12px;
-    }
-
-    .source-node,
-    .aws-node,
-    .tool-node {
-      border: 1px solid var(--line);
-      background: var(--white);
-      padding: 14px;
-    }
-
-    .source-node {
-      border-left: 6px solid var(--teal);
-    }
-
-    .source-node.cloud-source {
-      border-left-color: var(--blue);
-    }
-
-    .aws-boundary {
-      border: 2px solid var(--amber);
-      background: #fffaf2;
-      padding: 16px;
-    }
-
-
-    .aws-service-flow {
-      display: grid;
-      grid-template-columns: repeat(5, minmax(120px, 1fr));
-      gap: 10px;
-      align-items: stretch;
-    }
-
-    .aws-flow-step {
-      position: relative;
-      border: 1px solid var(--line);
-      background: var(--white);
-      padding: 12px;
-      min-height: 118px;
-    }
-
-    .aws-flow-step:not(:last-child)::after {
-      content: ">";
-      position: absolute;
-      right: -12px;
-      top: 42px;
-      color: var(--muted);
-      font-weight: 800;
-      font-size: 18px;
-      z-index: 2;
-    }
-
-    .flow-label {
-      margin-top: 12px;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.35;
-    }
-
-    @media (max-width: 980px) {
-      .aws-service-flow {
-        grid-template-columns: 1fr;
-      }
-
-      .aws-flow-step:not(:last-child)::after {
-        right: 50%;
-        top: auto;
-        bottom: -18px;
-        transform: rotate(90deg);
-      }
-    }
-    .aws-services {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-    }
-
-
-    .aws-icon {
-      width: 42px;
-      height: 42px;
-      object-fit: contain;
-      display: block;
-      margin-bottom: 8px;
-    }
-    .aws-node {
-      min-height: 70px;
-    }
-
-    .tool-node {
-      border-left: 6px solid var(--green);
-      min-height: 220px;
-    }
-
-    .node-title {
-      font-weight: 800;
-      margin-bottom: 6px;
-      font-size: 15px;
-    }
-
-    .node-text {
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.35;
-    }
-
-    .schema-arrow {
-      color: var(--muted);
-      font-size: 30px;
-      font-weight: 800;
-      text-align: center;
-    }
-
-    @media (max-width: 980px) {
-      .aws-schema {
-        grid-template-columns: 1fr;
-      }
-
-      .schema-arrow {
-        transform: rotate(90deg);
-      }
-    }
-
-    .implementation-callout {
-      display: grid;
-      grid-template-columns: 210px 1fr;
-      gap: 18px;
-      align-items: center;
-      padding: 20px 24px;
-      background: var(--ink);
-      color: var(--white);
-      border-radius: 8px;
-      border-left: 10px solid var(--amber);
-    }
-
-    .implementation-callout strong {
-      color: var(--white);
-      font-size: 20px;
-    }
-
-    .implementation-callout span {
-      color: #dfe9ea;
-      font-size: 17px;
-      line-height: 1.4;
-    }
-
-    @media (max-width: 640px) {
-      .implementation-callout {
-        grid-template-columns: 1fr;
-      }
-    }
-    footer {
-        padding-left: 18px;
-        padding-right: 18px;
-      }
-
-      h1 {
-        font-size: 32px;
-      }
-
-      .steps {
-        grid-template-columns: 1fr;
-      }
-
-      .score-step {
-        grid-column: span 1;
-      }
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Intégration KPI TOIL : prochaines étapes</title>
+<style>
+  :root {
+    color-scheme: light;
+    --surface: #fcfcfb;
+    --page: #f4f6f8;
+    --card: #ffffff;
+    --ink: #0b0b0b;
+    --ink-2: #3d3d3b;
+    --muted: #6b6a65;
+    --hair: #e4e4e0;
+    --hair-strong: #d3d3cd;
+
+    --blue:   #2a78d6;
+    --blue-soft: #eaf2fc;
+    --orange: #eb6834;
+    --orange-soft: #fdf0ea;
+    --aqua:   #1baf7a;
+    --aqua-soft: #e9f8f2;
+    --yellow: #c98500;
+    --yellow-soft: #fdf3e0;
+    --violet: #4a3aa7;
+    --violet-soft: #efedf9;
+    --magenta: #b23e78;
+    --magenta-soft: #fbeaf2;
+
+    --good: #0ca30c;
+    --warning: #c9790a;
+    --critical: #d03b3b;
+
+    --radius: 14px;
+    --radius-sm: 10px;
+    --shadow: 0 1px 2px rgba(11,11,11,0.04), 0 6px 16px rgba(11,11,11,0.05);
+    --shadow-sm: 0 1px 2px rgba(11,11,11,0.05);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--page);
+    color: var(--ink);
+    font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    width: min(1200px, calc(100vw - 32px));
+    margin: 28px auto;
+    background: var(--surface);
+    border: 1px solid var(--hair);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+
+  svg.ic { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+
+  /* ---------- En-tête ---------- */
+
+  header {
+    padding: 34px 44px 28px;
+    background:
+      radial-gradient(1200px 400px at 100% -10%, rgba(42,120,214,0.08), transparent 60%),
+      linear-gradient(180deg, #ffffff 0%, #f7fafa 100%);
+    border-bottom: 1px solid var(--hair);
+  }
+
+  .brand-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .brand-mark {
+    flex: none;
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    background: linear-gradient(135deg, var(--blue), var(--violet));
+    display: grid;
+    place-items: center;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .brand-mark svg { width: 18px; height: 18px; stroke: #fff; }
+
+  .kicker {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--blue);
+  }
+
+  h1 {
+    margin: 0;
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1.12;
+    letter-spacing: -0.01em;
+  }
+
+  .subtitle {
+    margin-top: 10px;
+    max-width: 800px;
+    color: var(--muted);
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  .ask-banner {
+    margin-top: 18px;
+    max-width: 960px;
+    padding: 16px 20px;
+    background: var(--ink);
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .ask-label {
+    flex: none;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #ffd7b8;
+    background: rgba(255,255,255,0.08);
+    padding: 4px 10px;
+    border-radius: 999px;
+  }
+
+  .ask-text {
+    color: #f2f2ef;
+    font-size: 15.5px;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  /* ---------- Résumé Problème / Démarche / Résultat ---------- */
+
+  .summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    padding: 22px 44px;
+    border-bottom: 1px solid var(--hair);
+  }
+
+  .summary-box {
+    border-radius: var(--radius-sm);
+    background: var(--card);
+    border: 1px solid var(--hair);
+    padding: 16px 18px;
+    min-height: 96px;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .summary-box .label {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-weight: 700;
+    font-size: 12.5px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+  }
+
+  .icon-badge {
+    flex: none;
+    width: 26px;
+    height: 26px;
+    border-radius: 8px;
+    display: grid;
+    place-items: center;
+    color: #fff;
+  }
+
+  .icon-badge svg { width: 15px; height: 15px; }
+
+  .summary-box:nth-child(1) .icon-badge { background: var(--orange); }
+  .summary-box:nth-child(2) .icon-badge { background: var(--blue); }
+  .summary-box:nth-child(3) .icon-badge { background: var(--aqua); }
+
+  .summary-box p,
+  .step p,
+  .formula p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 14.5px;
+    line-height: 1.45;
+  }
+
+  .summary-box p strong { color: var(--ink); }
+
+  /* ---------- Feuille de route graphique ---------- */
+
+  .roadmap {
+    padding: 26px 44px 6px;
+  }
+
+  .roadmap-heading {
+    font-size: 12.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    margin-bottom: 18px;
+  }
+
+  .roadmap-track {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .roadmap-track::before {
+    content: "";
+    position: absolute;
+    top: 26px;
+    left: 52px;
+    right: 52px;
+    height: 2px;
+    background: repeating-linear-gradient(90deg, var(--hair-strong) 0 6px, transparent 6px 12px);
+    z-index: 0;
+  }
+
+  .roadmap-step {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    flex: 1;
+    gap: 10px;
+  }
+
+  .roadmap-badge {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    color: #fff;
+    box-shadow: var(--shadow);
+    border: 4px solid var(--surface);
+  }
+
+  .roadmap-badge svg { width: 22px; height: 22px; }
+
+  .roadmap-step:nth-child(1) .roadmap-badge { background: var(--blue); }
+  .roadmap-step:nth-child(2) .roadmap-badge { background: var(--orange); }
+  .roadmap-step:nth-child(3) .roadmap-badge { background: var(--aqua); }
+  .roadmap-step:nth-child(4) .roadmap-badge { background: var(--violet); }
+
+  .roadmap-phase {
+    font-size: 10.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+  }
+
+  .roadmap-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink);
+    max-width: 140px;
+    line-height: 1.25;
+  }
+
+  /* ---------- Corps principal ---------- */
+
+  main { padding: 26px 44px 38px; }
+
+  .section-title {
+    margin: 0 0 22px;
+    font-size: 23px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .section-sub {
+    margin: 0 0 20px;
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  /* ---------- Phases ---------- */
+
+  .phase {
+    display: grid;
+    grid-template-columns: 170px 1fr;
+    gap: 22px;
+    margin-bottom: 22px;
+  }
+
+  .phase:last-child { margin-bottom: 0; }
+
+  .phase-meta {
+    border-left: 3px solid var(--hair-strong);
+    padding-left: 14px;
+  }
+
+  .phase:nth-of-type(1) .phase-meta { border-left-color: var(--blue); }
+  .phase:nth-of-type(2) .phase-meta { border-left-color: var(--orange); }
+  .phase:nth-of-type(3) .phase-meta { border-left-color: var(--aqua); }
+  .phase:nth-of-type(4) .phase-meta { border-left-color: var(--violet); }
+
+  .phase-index {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 6px;
+  }
+
+  .phase:nth-of-type(1) .phase-index { color: var(--blue); }
+  .phase:nth-of-type(2) .phase-index { color: var(--orange); }
+  .phase:nth-of-type(3) .phase-index { color: var(--aqua); }
+  .phase:nth-of-type(4) .phase-index { color: var(--violet); }
+
+  .phase-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.3;
+  }
+
+  .phase-steps {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .step {
+    position: relative;
+    padding: 16px 16px 14px;
+    border: 1px solid var(--hair);
+    border-radius: var(--radius-sm);
+    background: var(--card);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .step-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+
+  .number {
+    flex: none;
+    width: 26px;
+    height: 26px;
+    display: grid;
+    place-items: center;
+    border-radius: 8px;
+    background: var(--ink);
+    color: #fff;
+    font-weight: 700;
+    font-size: 13px;
+  }
+
+  .phase:nth-of-type(1) .number { background: var(--blue); }
+  .phase:nth-of-type(2) .number { background: var(--orange); }
+  .phase:nth-of-type(3) .number { background: var(--aqua); }
+  .phase:nth-of-type(4) .number { background: var(--violet); }
+
+  .step h3 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .example {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--hair-strong);
+    color: var(--ink-2);
+    font-size: 13px;
+    line-height: 1.35;
+  }
+
+  .example strong { color: var(--ink); }
+
+  .inline-link {
+    color: var(--blue);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .flag {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 12px;
+    color: var(--warning);
+    background: var(--yellow-soft);
+    border-radius: 6px;
+    padding: 4px 8px;
+    line-height: 1.35;
+  }
+
+  .flag-question {
+    color: #1a5aa8;
+    background: var(--blue-soft);
+  }
+
+  /* ---------- Formules ---------- */
+
+  .formula-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-top: 14px;
+  }
+
+  .formula {
+    padding: 20px 22px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--hair);
+    background: var(--card);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .formula.toil-score-formula { grid-column: 1 / -1; }
+
+  .formula.formula-goal {
+    background: var(--aqua-soft);
+    border: 1px solid var(--aqua);
+    border-left: 4px solid var(--aqua);
+  }
+
+  .formula.formula-goal strong.title {
+    color: #0c8a5c;
+  }
+
+  .formula strong.title {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  .formula-code {
+    display: inline-block;
+    margin-top: 6px;
+    font-family: "Cascadia Code", "SFMono-Regular", Consolas, monospace;
+    font-size: 13px;
+    background: #f2f3f2;
+    border: 1px solid var(--hair);
+    border-radius: 8px;
+    padding: 8px 12px;
+    color: var(--ink-2);
+  }
+
+  .score-table {
+    width: 100%;
+    margin-top: 14px;
+    border-collapse: collapse;
+    font-size: 12.5px;
+    line-height: 1.3;
+  }
+
+  .score-table th,
+  .score-table td {
+    border: 1px solid var(--hair);
+    padding: 8px 9px;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .score-table thead th {
+    background: var(--ink);
+    color: #fff;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    text-align: center;
+  }
+
+  .score-table thead th:first-child { text-align: left; }
+
+  .score-table tbody td:first-child { font-weight: 700; color: var(--ink); background: #fafafa; }
+
+  /* Teinte séquentielle : plus la colonne monte (1→5), plus le TOIL est élevé */
+  .score-table tbody td:nth-child(2) { background: #f4f9ff; }
+  .score-table tbody td:nth-child(3) { background: #e3f0fd; }
+  .score-table tbody td:nth-child(4) { background: #cde2fb; }
+  .score-table tbody td:nth-child(5) { background: #9ec5f4; }
+  .score-table tbody td:nth-child(6) { background: #5598e7; color: #fff; }
+
+  .priority-levels { margin-top: 10px; display: grid; gap: 7px; }
+  .priority-levels div {
+    font-size: 13.5px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  .priority-levels svg { width: 15px; height: 15px; flex: none; }
+  .priority-levels b {
+    flex: none;
+    width: 62px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 999px;
+    text-align: center;
+  }
+  .priority-levels .high b { background: #fbe4e2; color: var(--critical); }
+  .priority-levels .high svg { color: var(--critical); }
+  .priority-levels .medium b { background: var(--yellow-soft); color: var(--warning); }
+  .priority-levels .medium svg { color: var(--warning); }
+  .priority-levels .low b { background: var(--aqua-soft); color: #0c8a5c; }
+  .priority-levels .low svg { color: #0c8a5c; }
+
+  /* ---------- Infra / architecture AWS ---------- */
+
+  .infra { margin-top: 32px; }
+
+  .infra-sub {
+    margin: 0 0 22px;
+    color: var(--muted);
+    font-size: 13.5px;
+  }
+
+  .architecture-figure {
+    position: relative;
+    margin: 0;
+    padding: 14px 10px 4px;
+    background: var(--card);
+    border: 1px solid var(--hair);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .architecture-figure svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .diag-tooltip {
+    position: absolute;
+    z-index: 5;
+    max-width: 260px;
+    background: var(--ink);
+    color: #fff;
+    font-size: 12px;
+    line-height: 1.45;
+    padding: 8px 11px;
+    border-radius: 8px;
+    box-shadow: var(--shadow-sm);
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 0.15s ease, transform 0.15s ease;
+  }
+
+  .diag-tooltip.is-visible { opacity: 1; transform: translateY(0); }
+
+  .diag-tooltip strong { color: #fff; font-weight: 700; }
+
+  .architecture-figure figcaption {
+    margin: 10px 4px 4px;
+    padding-top: 12px;
+    border-top: 1px dashed var(--hair-strong);
+    color: var(--muted);
+    font-size: 12.5px;
+    line-height: 1.45;
+  }
+
+  .diag-box {
+    fill: var(--surface);
+    stroke: var(--hair-strong);
+    stroke-width: 1.5;
+  }
+
+  .diag-box-onprem { fill: var(--blue-soft); stroke: #9fbfe6; }
+  .diag-box-branch { fill: var(--violet-soft); stroke: #c3b8ea; }
+  .diag-box-tool { fill: var(--aqua-soft); stroke: #8fd6b8; stroke-width: 2; }
+
+  .diag-node { cursor: help; }
+  .diag-node:hover .diag-box {
+    stroke: var(--blue);
+    stroke-width: 2;
+    filter: drop-shadow(0 4px 10px rgba(11,11,11,0.14));
+  }
+  .diag-node:hover .diag-title,
+  .diag-node:hover .diag-chip-label {
+    fill: var(--blue);
+  }
+
+  .diag-title {
+    font-size: 15px;
+    font-weight: 700;
+    fill: var(--ink);
+  }
+
+  .diag-sub {
+    font-size: 11.5px;
+    fill: var(--muted);
+  }
+
+  .diag-boundary-aws {
+    fill: none;
+    stroke: #f0b98a;
+    stroke-width: 1.5;
+    stroke-dasharray: 6 5;
+  }
+
+  .diag-boundary-vpc {
+    fill: rgba(42,120,214,0.035);
+    stroke: #9fbfe6;
+    stroke-width: 1.5;
+  }
+
+  .diag-boundary-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+
+  .diag-boundary-label-aws { fill: #a85327; }
+  .diag-boundary-label-vpc { fill: #1a5aa8; }
+
+  .diag-row-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    fill: var(--ink-2);
+  }
+
+  .diag-line {
+    stroke: var(--hair-strong);
+    stroke-width: 2;
+    fill: none;
+  }
+
+  .diag-line-dashed {
+    stroke-dasharray: 5 4;
+  }
+
+  .diag-hair {
+    stroke: var(--hair);
+    stroke-width: 1;
+  }
+
+  .diag-arrow-label {
+    font-size: 11px;
+    fill: var(--muted);
+  }
+
+  .diag-chip-label {
+    font-size: 12px;
+    fill: var(--ink-2);
+  }
+
+  .arrow-fill { fill: var(--hair-strong); }
+
+  .diagram-hint {
+    margin: 18px 0 0;
+    font-size: 12.5px;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  .infra-note {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    padding: 12px 14px;
+    background: var(--yellow-soft);
+    border: 1px solid #ecd39c;
+    border-radius: var(--radius-sm);
+    color: var(--ink-2);
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  .infra-note .dot {
+    flex: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--warning);
+    color: #fff;
+    font-weight: 800;
+    font-size: 11px;
+    display: grid;
+    place-items: center;
+  }
+
+  /* ---------- Annexe technique (repliable) ---------- */
+
+  details.appendix {
+    margin-top: 36px;
+    border: 1px solid var(--hair);
+    border-radius: var(--radius);
+    background: var(--card);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+  }
+
+  details.appendix > summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 18px 26px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 700;
+    font-size: 16px;
+  }
+
+  details.appendix > summary::-webkit-details-marker { display: none; }
+
+  details.appendix > summary .chevron {
+    flex: none;
+    display: inline-block;
+    transition: transform 0.15s ease;
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  details.appendix[open] > summary .chevron { transform: rotate(90deg); }
+
+  details.appendix > summary .tag {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    background: #f2f3f2;
+    border-radius: 999px;
+    padding: 3px 10px;
+    margin-left: auto;
+  }
+
+  .appendix-body {
+    padding: 0 26px 30px;
+    border-top: 1px solid var(--hair);
+    padding-top: 26px;
+  }
+
+  .appendix-static {
+    margin-top: 32px;
+    padding-top: 26px;
+    border-top: 1px solid var(--hair);
+  }
+
+  .appendix-static .appendix-body { padding: 0; border: none; }
+
+  .appendix-heading {
+    font-size: 15px;
+    font-weight: 700;
+    margin: 0 0 4px;
+  }
+
+  .appendix-heading:not(:first-child) { margin-top: 32px; }
+
+  .toil-score-section {
+    margin-top: 32px;
+    padding-top: 26px;
+    border-top: 1px solid var(--hair);
+  }
+  .toil-score-section .formula + .formula { margin-top: 16px; }
+
+  @media print {
+    details.appendix:not([open]) > summary ~ *,
+    details.appendix:not([open]) > .appendix-body {
+      display: block !important;
+    }
+    details.appendix > summary .chevron { display: none; }
+  }
+
+  /* ---------- Pied de page ---------- */
+
+  .implementation-callout {
+    display: grid;
+    grid-template-columns: 190px 1fr;
+    gap: 18px;
+    align-items: center;
+    padding: 22px 26px;
+    background: var(--ink);
+    color: #fff;
+    border-radius: var(--radius);
+    margin: 30px 44px 0;
+  }
+
+  main .implementation-callout { margin: 32px 0 0; }
+
+  .implementation-callout strong {
+    display: block;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #ffd7b8;
+    margin-bottom: 4px;
+  }
+
+  .implementation-callout .big { font-size: 17px; font-weight: 700; }
+
+  .implementation-callout span.detail {
+    color: #d7d7d3;
+    font-size: 14.5px;
+    line-height: 1.45;
+  }
+
+  footer.page-footer {
+    padding: 20px 44px 26px;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  /* ---------- Responsive ---------- */
+
+  @media (max-width: 900px) {
+    .summary { grid-template-columns: 1fr; }
+    .formula-grid { grid-template-columns: 1fr; }
+    .phase { grid-template-columns: 1fr; }
+    .phase-steps { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 700px) {
+    .roadmap-track { flex-direction: column; align-items: stretch; gap: 22px; }
+    .roadmap-track::before { top: 0; bottom: 0; left: 25px; right: auto; width: 2px; height: auto; background: repeating-linear-gradient(180deg, var(--hair-strong) 0 6px, transparent 6px 12px); }
+    .roadmap-step { flex-direction: row; text-align: left; justify-content: flex-start; }
+    .roadmap-badge { width: 44px; height: 44px; }
+    .roadmap-title { max-width: none; }
+  }
+
+  @media (max-width: 640px) {
+    .page { width: 100%; margin: 0; border-radius: 0; }
+    header, .summary, .roadmap, main { padding-left: 18px; padding-right: 18px; }
+    .implementation-callout { grid-template-columns: 1fr; margin-left: 18px; margin-right: 18px; }
+    main .implementation-callout { margin-left: 0; margin-right: 0; }
+    footer.page-footer { padding-left: 18px; padding-right: 18px; }
+    h1 { font-size: 27px; }
+    .phase-steps { grid-template-columns: 1fr; }
+    details.appendix > summary { flex-wrap: wrap; }
+    details.appendix > summary .tag { margin-left: 0; }
+  }
+
+  @media print {
+    body { background: #fff; }
+    .page { width: 100%; margin: 0; border: none; border-radius: 0; box-shadow: none; }
+  }
+
+  /* ---------- Animations ---------- */
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .reveal.is-visible { opacity: 1; transform: translateY(0); }
+
+  .summary-box:nth-child(1).reveal { transition-delay: 0s; }
+  .summary-box:nth-child(2).reveal { transition-delay: 0.1s; }
+  .summary-box:nth-child(3).reveal { transition-delay: 0.2s; }
+
+  .phase.reveal:nth-of-type(1) { transition-delay: 0s; }
+  .phase.reveal:nth-of-type(2) { transition-delay: 0.08s; }
+  .phase.reveal:nth-of-type(3) { transition-delay: 0.16s; }
+  .phase.reveal:nth-of-type(4) { transition-delay: 0.24s; }
+
+  .step-highlight { font-weight: 700; }
+  .phase:nth-of-type(1) .step-highlight { color: var(--blue); }
+  .phase:nth-of-type(2) .step-highlight { color: var(--orange); }
+  .phase:nth-of-type(3) .step-highlight { color: var(--aqua); }
+  .phase:nth-of-type(4) .step-highlight { color: var(--violet); }
+
+  /* Micro-interactions : survol */
+  .step, .summary-box, .formula {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .step:hover, .summary-box:hover, .formula:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(11,11,11,0.08);
+  }
+
+  .roadmap-badge { transition: transform 0.2s ease; }
+  .roadmap-step:hover .roadmap-badge { transform: scale(1.08); }
+
+  /* Feuille de route : ligne qui se dessine + étapes en cascade */
+  .roadmap-track::before {
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 1.1s ease;
+  }
+
+  .roadmap.is-visible .roadmap-track::before { transform: scaleX(1); }
+
+  .roadmap-step {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  .roadmap.is-visible .roadmap-step { opacity: 1; transform: translateY(0); }
+
+  .roadmap-step:nth-child(1) { transition-delay: 0.15s; }
+  .roadmap-step:nth-child(2) { transition-delay: 0.35s; }
+  .roadmap-step:nth-child(3) { transition-delay: 0.55s; }
+  .roadmap-step:nth-child(4) { transition-delay: 0.75s; }
+
+  @media (max-width: 700px) {
+    .roadmap-track::before { transform: scaleY(0); transform-origin: top center; }
+    .roadmap.is-visible .roadmap-track::before { transform: scaleY(1); }
+  }
+
+  /* Schéma AWS : un seul point anime tout le parcours */
+  .diag-flow-dot {
+    fill: var(--blue);
+    animation: diagFlow 9s linear infinite;
+  }
+
+  @keyframes diagFlow {
+    0%   { offset-distance: 0%;   opacity: 0; }
+    8%   { opacity: 1; }
+    92%  { opacity: 1; }
+    100% { offset-distance: 100%; opacity: 0; }
+  }
+
+  /* Détail technique : ouverture animée en douceur (voir script) */
+  details.appendix > .appendix-body { overflow: hidden; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+    .diag-flow-dot { display: none; }
+  }
+</style>
 </head>
 <body>
   <div class="page">
     <header>
-      <h1>TOIL KPI Integration Next Steps Proposition</h1>
-      <div class="subtitle">
-        Next steps to add a measurable TOIL KPI into the incident analysis tool
+      <div class="brand-row">
+        <span class="brand-mark">
+          <svg class="ic" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
+        </span>
+        <span class="kicker">Platform Engineering · Toil Reduction</span>
       </div>
+      <h1>Intégration d'un KPI TOIL : proposition des prochaines étapes</h1>
     </header>
 
     <section class="summary">
-      <div class="summary-box">
-        <div class="label">Goal</div>
-        <p>Measure and prioritize repetitive manual incident work<br><br><strong>How:</strong> Group recurring incidents and calculate a TOIL score for each family</p>
+      <div class="summary-box reveal">
+        <div class="label">
+          <span class="icon-badge"><svg class="ic" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+          Problème
+        </div>
+        <p>Les tâches répétitives (<strong>TOIL</strong>) liées aux incidents consomment un temps considérable, mais restent <strong>invisibles</strong> : aucun KPI, aucune tendance, aucune priorisation pour savoir par quoi commencer.</p>
       </div>
-      <div class="summary-box">
-        <div class="label">Inputs</div>
-        <p><strong>JIRA</strong> incidents, <strong>Icinga</strong> alerts and <strong>SOPs</strong> manual steps<br><br><strong>How:</strong> Connect incidents, alerts and SOP steps by service and time window</p>
+      <div class="summary-box reveal">
+        <div class="label">
+          <span class="icon-badge"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg></span>
+          Démarche
+        </div>
+        <p>Identifier puis <strong>noter</strong> chaque famille d'incidents récurrents selon la fréquence, l'effort, le risque, la répétabilité et la confiance, puis <strong>classer</strong> le résultat.</p>
       </div>
-      <div class="summary-box">
-        <div class="label">Output</div>
-        <p>TOIL score, reduction KPI and ranked improvement backlog<br><br><strong>How:</strong> Display score, KPI trend and next actions in the incident analysis tool</p>
+      <div class="summary-box reveal">
+        <div class="label">
+          <span class="icon-badge"><svg class="ic" viewBox="0 0 24 24"><polyline points="3 17 9 11 13 15 21 6"/><polyline points="16 6 21 6 21 11"/></svg></span>
+          Résultat
+        </div>
+        <p>Un <strong>score TOIL</strong>, un indicateur de tendance de réduction et un <strong>backlog priorisé</strong>, intégrés directement dans l'outil d'analyse des incidents (développé par Denis).</p>
+      </div>
+    </section>
+
+    <section class="roadmap" aria-label="Feuille de route en quatre phases">
+      <div class="roadmap-heading">Feuille de route en un coup d'œil</div>
+      <div class="roadmap-track">
+        <div class="roadmap-step">
+          <span class="roadmap-badge"><svg class="ic" viewBox="0 0 24 24" stroke="#fff"><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg></span>
+          <span class="roadmap-phase">Phase 1</span>
+          <span class="roadmap-title">Découverte &amp; périmètre</span>
+        </div>
+        <div class="roadmap-step">
+          <span class="roadmap-badge"><svg class="ic" viewBox="0 0 24 24" stroke="#fff"><path d="M10 13a5 5 0 0 0 7.54.54l2-2a5 5 0 0 0-7.07-7.07l-1 1"/><path d="M14 11a5 5 0 0 0-7.54-.54l-2 2a5 5 0 0 0 7.07 7.07l1-1"/></svg></span>
+          <span class="roadmap-phase">Phase 2</span>
+          <span class="roadmap-title">Données &amp; corrélation</span>
+        </div>
+        <div class="roadmap-step">
+          <span class="roadmap-badge"><svg class="ic" viewBox="0 0 24 24" stroke="#fff"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg></span>
+          <span class="roadmap-phase">Phase 3</span>
+          <span class="roadmap-title">Scoring &amp; validation</span>
+        </div>
+        <div class="roadmap-step">
+          <span class="roadmap-badge"><svg class="ic" viewBox="0 0 24 24" stroke="#fff"><polyline points="3 17 9 11 13 15 21 6"/><polyline points="16 6 21 6 21 11"/></svg></span>
+          <span class="roadmap-phase">Phase 4</span>
+          <span class="roadmap-title">Suivi du KPI &amp; backlog</span>
+        </div>
       </div>
     </section>
 
     <main>
-      <h2 class="section-title">Next Steps</h2>
+      <h2 class="section-title">Chemin vers un KPI opérationnel</h2>
 
-      <section class="steps">
-        <article class="step">
-          <div class="number">0</div>
-          <h2>Check Existing Work</h2>
-          <p>Ask other services and departments if they already worked on TOIL KPIs, scoring rules or dashboards</p>
-        </article>
+      <div class="phase reveal">
+        <div class="phase-meta">
+          <div class="phase-index">Phase 1</div>
+          <div class="phase-title">Découverte &amp; périmètre</div>
+        </div>
+        <div class="phase-steps">
+          <article class="step">
+            <div class="step-head"><div class="number">1</div><h3>Vérifier l'existant</h3></div>
+            <p>Demander aux <span class="step-highlight">autres équipes et départements</span> s'ils ont <span class="step-highlight">déjà travaillé</span> sur des KPI TOIL, des règles de scoring ou des tableaux de bord</p>
+          </article>
+          <article class="step">
+            <div class="step-head"><div class="number">2</div><h3>Choisir le périmètre pilote</h3></div>
+            <p>Sélectionner <span class="step-highlight">2 ou 3 familles</span> d'incidents récurrents</p>
+            <div class="flag flag-question">À trancher : sur quel environnement travailler, uniquement la production ?</div>
+            <div class="example"><strong>Exemple :</strong> un service arrêté sur un serveur</div>
+          </article>
+        </div>
+      </div>
 
-        <article class="step">
-          <div class="number">1</div>
-          <h2>Choose Pilot Scope</h2>
-          <p>Select 2 or 3 recurring incident families</p>
-          <div class="example"><strong>Example:</strong> Disk full alerts on production servers</div>
-        </article>
+      <div class="phase reveal">
+        <div class="phase-meta">
+          <div class="phase-index">Phase 2</div>
+          <div class="phase-title">Données &amp; corrélation</div>
+        </div>
+        <div class="phase-steps">
+          <article class="step">
+            <div class="step-head"><div class="number">3</div><h3>Définir les champs de données</h3></div>
+            <p>Lister les <span class="step-highlight">champs minimums requis</span> pour chaque source.</p>
+            <div class="flag">Si une donnée est manquante, la signaler et utiliser un score de confiance plus faible. Ne pas la compléter silencieusement : cela fausserait le score TOIL sans que personne ne le sache.</div>
+            <div class="example"><strong>Exemple :</strong> service, nom de l'alerte, date et heure de l'incident, résolution, nom de la SOP</div>
+          </article>
+          <article class="step">
+            <div class="step-head"><div class="number">4</div><h3>Corréler les preuves</h3></div>
+            <p><span class="step-highlight">Relier incidents, alertes et SOP</span> au sein d'une même famille d'incidents</p>
+            <div class="example"><strong>Exemple :</strong> INC de service arrêté, alerte Icinga « service down » et SOP de redémarrage du service</div>
+          </article>
+        </div>
+      </div>
 
-        <article class="step">
-          <div class="number">2</div>
-          <h2>Define Data Fields</h2>
-          <p>List the minimum fields required from each source. ⚠️ If data is missing, flag it and use a lower confidence score. We could fill in the missing fields</p>
-          <div class="example"><strong>Example:</strong> Service, alert name, timestamp, resolution, SOP name</div>
-        </article>
+      <div class="phase reveal">
+        <div class="phase-meta">
+          <div class="phase-index">Phase 3</div>
+          <div class="phase-title">Scoring &amp; validation</div>
+        </div>
+        <div class="phase-steps">
+          <article class="step">
+            <div class="step-head"><div class="number">5</div><h3>Noter le TOIL</h3></div>
+            <p><span class="step-highlight">Évaluer chaque dimension du TOIL</span> de 1 à 5 : fréquence, effort, risque, répétabilité et confiance</p>
+            <div class="example"><strong>Exemple :</strong> voir le <a class="inline-link" href="#toil-score-table">Tableau de score TOIL</a></div>
+          </article>
+          <article class="step">
+            <div class="step-head"><div class="number">6</div><h3>Valider le score</h3></div>
+            <p><span class="step-highlight">Valider</span> l'effort de travail humain, le score et la résolution proposée</p>
+            <div class="example"><strong>Exemple :</strong> effort de travail humain confirmé à 45 minutes</div>
+          </article>
+        </div>
+      </div>
 
-        <article class="step">
-          <div class="number">3</div>
-          <h2>Correlate Evidence</h2>
-          <p>Link incidents, alerts and SOPs into the same incident family</p>
-          <div class="example"><strong>Example:</strong> INC about stopped service, Icinga service down alert and service restart SOP</div>
-        </article>
+      <div class="phase reveal">
+        <div class="phase-meta">
+          <div class="phase-index">Phase 4</div>
+          <div class="phase-title">Suivi du KPI &amp; backlog</div>
+        </div>
+        <div class="phase-steps">
+          <article class="step">
+            <div class="step-head"><div class="number">7</div><h3>Suivre le KPI</h3></div>
+            <p><span class="step-highlight">Comparer les heures</span> de TOIL de référence aux heures actuelles après amélioration</p>
+            <div class="example"><strong>Exemple :</strong> voir le <a class="inline-link" href="#calcul-reduction">Calcul de réduction</a></div>
+          </article>
+          <article class="step">
+            <div class="step-head"><div class="number">8</div><h3>Créer le backlog</h3></div>
+            <p><span class="step-highlight">Utiliser les éléments à score élevé</span> pour améliorer les SOP, créer des actions en libre-service ou préparer un backlog d'automatisation</p>
+            <div class="example"><strong>Exemple :</strong> redémarrage en libre-service pour une panne de service récurrente, si aucun job Rundeck n'existe déjà</div>
+          </article>
+        </div>
+      </div>
 
-        <article class="step">
-          <div class="number">4</div>
-          <h2>Score TOIL</h2>
-          <p>Rate each TOIL dimension from 1 to 5: Frequency, Effort, Risk, Repeatability and Confidence</p>
-          <div class="example"><strong>Example:</strong> See TOIL Score Table</div>
-        </article>
-
-        <article class="step">
-          <div class="number">5</div>
-          <h2>Validate Score</h2>
-          <p>Validate the human work effort, score and proposed resolution</p>
-          <div class="example"><strong>Example:</strong> Human work effort confirmed at 45 minutes</div>
-        </article>
-
-        <article class="step">
-          <div class="number">6</div>
-          <h2>Track KPI</h2>
-          <p>Compare baseline TOIL hours with current TOIL hours after improvement</p>
-          <div class="example"><strong>Example:</strong> See Reduction Calcul</div>
-        </article>
-
-        <article class="step">
-          <div class="number">7</div>
-          <h2>Create Backlog</h2>
-          <p>Use high-score items to improve SOPs, create self-service actions or prepare automation backlog</p>
-          <div class="example"><strong>Example:</strong> Self-service restart for a recurring service failure</div>
-        </article>
-      </section>
-
-      <section class="formula-grid">
-        <div class="formula toil-score-formula">
-          <strong>TOIL Score Table</strong>
-          <p>Rate each dimension from 1 to 5, then add the values. Maximum score: 25</p>
-          <table class="score-table" aria-label="TOIL score table">
+      <section class="toil-score-section" id="toil-score-table">
+        <div class="formula toil-score-formula reveal">
+          <strong class="title">Tableau de score TOIL</strong>
+          <p>Noter chaque dimension de 1 à 5, puis additionner les valeurs. Score maximum : 25.</p>
+          <table class="score-table" aria-label="Tableau de score TOIL">
             <thead>
-              <tr>
-                <th>Dimension</th>
-                <th>1</th>
-                <th>2</th>
-                <th>3</th>
-                <th>4</th>
-                <th>5</th>
-              </tr>
+              <tr><th>Dimension</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr>
             </thead>
             <tbody>
-              <tr><td>Frequency</td><td>Rare</td><td>Monthly</td><td>Weekly</td><td>Several times/week</td><td>Daily</td></tr>
-              <tr><td>Effort</td><td>Few minutes</td><td>15-30 min</td><td>30-60 min</td><td>1-2h</td><td>More than 2h</td></tr>
-              <tr><td>Risk</td><td>Low impact</td><td>Minor impact</td><td>Service degraded</td><td>Major impact</td><td>SLA risk</td></tr>
-              <tr><td>Repeatability</td><td>Unique case</td><td>Similar symptom</td><td>Similar steps</td><td>Same fix often</td><td>Same SOP</td></tr>
-              <tr><td>Confidence</td><td>Weak data</td><td>One source</td><td>Partial match</td><td>Two sources linked</td><td>Full evidence</td></tr>
+              <tr><td>Fréquence</td><td>Rare</td><td>Mensuelle</td><td>Hebdomadaire</td><td>Plusieurs fois/semaine</td><td>Quotidienne</td></tr>
+              <tr><td>Effort</td><td>Quelques minutes</td><td>15–30 min</td><td>30–60 min</td><td>1–2 h</td><td>Plus de 2 h</td></tr>
+              <tr><td>Risque</td><td>Impact faible</td><td>Impact mineur</td><td>Service dégradé</td><td>Impact majeur</td><td>Risque SLA</td></tr>
+              <tr><td>Répétabilité</td><td>Cas unique</td><td>Symptôme similaire</td><td>Étapes similaires</td><td>Même correctif souvent</td><td>Même SOP</td></tr>
+              <tr><td>Confiance</td><td>Données faibles</td><td>Une source</td><td>Correspondance partielle</td><td>Deux sources liées</td><td>Preuve complète</td></tr>
             </tbody>
           </table>
         </div>
-        <div class="formula">
-          <strong>Priority Score</strong>
-          <p>TOIL score x confidence factor.</p><div class="example">Use it to rank which TOIL items should be improved first<br><br><strong>High:</strong> Automate or self-service<br><strong>Medium:</strong> Improve SOP or ticket quality<br><strong>Low:</strong> Monitor only</div>
+
+        <div class="formula toil-score-formula reveal">
+          <strong class="title">Score de priorité</strong>
+          <p>Pour classer les éléments à améliorer en premier :</p>
+          <div class="formula-code">Score de priorité = Score TOIL × Score de confiance</div>
+          <div class="priority-levels">
+            <div class="high"><svg class="ic" viewBox="0 0 24 24"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg><b>Élevé</b> Automatiser ou passer en libre-service</div>
+            <div class="medium"><svg class="ic" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg><b>Moyen</b> Améliorer la SOP ou la qualité du ticket</div>
+            <div class="low"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/></svg><b>Faible</b> Surveiller uniquement</div>
+          </div>
         </div>
-        <div class="formula">
-          <strong>Reduction Calcul</strong>
-          <p>(Baseline hours - Current hours) / Baseline hours x 100</p>
+
+        <div class="formula toil-score-formula reveal" id="calcul-reduction">
+          <strong class="title">Calcul de réduction</strong>
+          <p>Heures TOIL de référence vs. actuelles, en pourcentage d'amélioration :</p>
+          <div class="formula-code">Réduction (%) = (Heures de référence − Heures actuelles) / Heures de référence × 100</div>
+        </div>
+
+        <div class="formula toil-score-formula reveal formula-goal">
+          <strong class="title">Première implémentation</strong>
+          <p><strong>Objectif :</strong> ajouter les champs de score TOIL, afficher les preuves derrière chaque score et exiger une validation humaine avant toute décision d'automatisation.</p>
         </div>
       </section>
 
-      <section class="infra" aria-label="AWS infrastructure option">
-        <h2>AWS Infrastructure Option</h2>
-        <div class="aws-schema">
-          <div class="source-stack">
-            <div class="source-node">
-              <div class="node-title">On-Premise Sources</div>
-              <div class="node-text">JIRA incidents<br>Icinga alerts<br>SOPs documents</div>
-            </div>
-            <div class="source-node cloud-source">
-              <div class="node-title">Cloud Sources</div>
-              <div class="node-text">CloudWatch alerts<br>Cloud JIRA export<br>SOPs from S3 or SharePoint export</div>
-            </div>
-          </div>
-          <div class="schema-arrow">&gt;</div>
-          <div class="aws-boundary">
-            <img class="aws-logo" src="aws-icons/aws-logo.svg" alt="AWS logo">
-            <div class="aws-service-flow">
-              <div class="aws-flow-step">
-                <img class="aws-icon" src="aws-icons/api-gateway.svg" alt="Amazon API Gateway icon">
-                <div class="node-title">Amazon API Gateway or VPN</div>
-                <div class="node-text">Receive incidents, alerts and SOP extracts</div>
-              </div>
-              <div class="aws-flow-step">
-                <img class="aws-icon" src="aws-icons/s3.svg" alt="Amazon S3 icon">
-                <div class="node-title">Amazon S3</div>
-                <div class="node-text">Store raw evidence and baseline files</div>
-              </div>
-              <div class="aws-flow-step">
-                <img class="aws-icon" src="aws-icons/step-functions.svg" alt="AWS Step Functions icon">
-                <div class="node-title">AWS Step Functions</div>
-                <div class="node-text">Run the TOIL KPI workflow</div>
-              </div>
-              <div class="aws-flow-step">
-                <img class="aws-icon" src="aws-icons/lambda.svg" alt="AWS Lambda icon">
-                <div class="node-title">AWS Lambda</div>
-                <div class="node-text">Correlate evidence and calculate scores</div>
-              </div>
-              <div class="aws-flow-step">
-                <img class="aws-icon" src="aws-icons/bedrock.svg" alt="Amazon Bedrock icon">
-                <div class="node-title">Amazon Bedrock</div>
-                <div class="node-text">Support incident analysis and recommendations</div>
-              </div>
-            </div>
-            <div class="flow-label">Flow: ingest sources, store evidence, orchestrate scoring, calculate TOIL KPI, propose prioritized actions.</div>          </div>
-          <div class="schema-arrow">&gt;</div>
-          <div class="tool-node">
-            <div class="node-title">Incident Analysis Tool</div>
-            <div class="node-text">TOIL score per incident family<br>Priority score<br>Reduction KPI<br>Human validation result<br>Improvement backlog</div>
-          </div>
+      <section class="appendix-static">
+        <div class="appendix-body">
+
+      <h3 class="appendix-heading">Option d'infrastructure AWS</h3>
+      <section class="infra" aria-label="Option d'infrastructure AWS">
+        <p class="infra-sub">Un pipeline serverless qui ingère les preuves, orchestre la corrélation et le scoring et renvoie les résultats à l'outil d'analyse des incidents, sans aucun serveur permanent à maintenir.</p>
+
+        <p class="diagram-hint reveal">Survolez chaque brique du schéma pour afficher son rôle.</p>
+
+        <figure class="architecture-figure reveal">
+          <svg viewBox="0 0 1220 900" role="img" aria-label="Schéma d'architecture AWS : les preuves sur site traversent un VPN ou Direct Connect vers un compte AWS, où API Gateway, Lambda et S3 ingèrent les preuves, puis EventBridge, Step Functions, Lambda et DynamoDB orchestrent la corrélation et le score, avec Bedrock appelé en support et IAM, Secrets Manager, CloudWatch en transverse, avant de renvoyer les résultats à l'outil d'analyse des incidents.">
+            <defs>
+              <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path class="arrow-fill" d="M0,0 L10,5 L0,10 z"></path>
+              </marker>
+            </defs>
+
+            <!-- On-prem -->
+            <rect class="diag-box diag-box-onprem" x="500" y="16" width="220" height="72" rx="10"></rect>
+            <text class="diag-title" x="610" y="46" text-anchor="middle">On-prem</text>
+            <text class="diag-sub" x="610" y="66" text-anchor="middle">JIRA · Icinga · SOP</text>
+
+            <line class="diag-line" x1="610" y1="88" x2="610" y2="106" marker-end="url(#arrow)"></line>
+
+            <!-- Compte AWS -->
+            <rect class="diag-boundary-aws" x="40" y="110" width="1140" height="620" rx="16"></rect>
+            <text class="diag-boundary-label diag-boundary-label-aws" x="60" y="134">AWS</text>
+
+            <!-- VPC -->
+            <rect class="diag-boundary-vpc" x="60" y="145" width="1100" height="555" rx="12"></rect>
+            <text class="diag-boundary-label diag-boundary-label-vpc" x="80" y="169">VPC</text>
+
+            <!-- Row label 1 -->
+            <text class="diag-row-label" x="80" y="200">1 · INGESTION</text>
+
+            <!-- Row 1 : API Gateway -->
+            <rect class="diag-box" x="90" y="210" width="150" height="100" rx="10"></rect>
+            <image href="aws-icons/api-gateway.svg" x="145" y="224" width="40" height="40"></image>
+            <text class="diag-title" x="165" y="282" text-anchor="middle">API Gateway</text>
+
+            <line class="diag-line" x1="240" y1="260" x2="266" y2="260" marker-end="url(#arrow)"></line>
+
+            <!-- Row 1 : Lambda ingest -->
+            <g class="diag-node" data-service="Lambda (ingestion)" data-desc="Valide et normalise les données reçues, en marquant les champs manquants avec un score de confiance plus faible." data-color="#ED7100">
+              <rect class="diag-box" x="270" y="210" width="150" height="100" rx="10"></rect>
+              <image href="aws-icons/lambda.svg" x="325" y="224" width="40" height="40"></image>
+              <text class="diag-title" x="345" y="282" text-anchor="middle">Lambda (ingestion)</text>
+            </g>
+
+            <line class="diag-line" x1="420" y1="260" x2="446" y2="260" marker-end="url(#arrow)"></line>
+
+            <!-- Row 1 : S3 -->
+            <g class="diag-node" data-service="S3 (preuves)" data-desc="Bucket versionné contenant les preuves brutes et les fichiers d'heures de référence TOIL." data-color="#7AA116">
+              <rect class="diag-box" x="450" y="210" width="150" height="100" rx="10"></rect>
+              <image href="aws-icons/s3.svg" x="505" y="224" width="40" height="40"></image>
+              <text class="diag-title" x="525" y="282" text-anchor="middle">S3 (preuves)</text>
+            </g>
+
+            <line class="diag-line" x1="525" y1="310" x2="525" y2="346" marker-end="url(#arrow)"></line>
+
+            <!-- Row label 2 -->
+            <text class="diag-row-label" x="80" y="378">2 · ORCHESTRATION ET SCORING</text>
+
+            <!-- Row 2 : EventBridge -->
+            <g class="diag-node" data-service="EventBridge" data-desc="Une règle déclenche le workflow dès qu'une nouvelle preuve arrive dans S3." data-color="#D82C6C">
+              <rect class="diag-box" x="450" y="360" width="150" height="100" rx="10"></rect>
+              <image href="aws-icons/eventbridge.svg" x="505" y="374" width="40" height="40"></image>
+              <text class="diag-title" x="525" y="432" text-anchor="middle">EventBridge</text>
+            </g>
+
+            <line class="diag-line" x1="600" y1="410" x2="626" y2="410" marker-end="url(#arrow)"></line>
+
+            <!-- Row 2 : Step Functions -->
+            <g class="diag-node" data-service="Step Functions" data-desc="Machine à états (corréler, noter, marquer la validation, persister), avec réessais et branches d'erreur définis par étape." data-color="#E7157B">
+              <rect class="diag-box" x="630" y="360" width="150" height="100" rx="10"></rect>
+              <image href="aws-icons/step-functions.svg" x="685" y="374" width="40" height="40"></image>
+              <text class="diag-title" x="705" y="432" text-anchor="middle">Step Functions</text>
+            </g>
+
+            <line class="diag-line" x1="780" y1="410" x2="806" y2="410" marker-end="url(#arrow)"></line>
+
+            <!-- Row 2 : Lambda score -->
+            <g class="diag-node" data-service="Lambda (score)" data-desc="Relie incident, alerte et SOP en une même famille et calcule le score TOIL." data-color="#ED7100">
+              <rect class="diag-box" x="810" y="360" width="150" height="100" rx="10"></rect>
+              <image href="aws-icons/lambda.svg" x="865" y="374" width="40" height="40"></image>
+              <text class="diag-title" x="885" y="425" text-anchor="middle">Lambda (score)</text>
+              <text class="diag-sub" x="885" y="441" text-anchor="middle">corrélation + score</text>
+            </g>
+
+            <line class="diag-line" x1="960" y1="410" x2="986" y2="410" marker-end="url(#arrow)"></line>
+
+            <!-- Row 2 : DynamoDB -->
+            <g class="diag-node" data-service="DynamoDB" data-desc="Stocke un élément par famille d'incidents : score, priorité, heures de référence vs. actuelles." data-color="#4053D6">
+              <rect class="diag-box" x="990" y="360" width="150" height="100" rx="10"></rect>
+              <image href="aws-icons/dynamodb.svg" x="1045" y="374" width="40" height="40"></image>
+              <text class="diag-title" x="1065" y="432" text-anchor="middle">DynamoDB</text>
+            </g>
+
+            <!-- Bedrock branch -->
+            <line class="diag-line diag-line-dashed" x1="885" y1="460" x2="885" y2="496" marker-end="url(#arrow)"></line>
+            <g class="diag-node" data-service="Bedrock" data-desc="Appelé de façon asynchrone par la Lambda de score pour rédiger une recommandation en langage clair (ne décide jamais du score lui-même)." data-color="#01A88D">
+              <rect class="diag-box diag-box-branch" x="800" y="500" width="170" height="90" rx="10"></rect>
+              <image href="aws-icons/bedrock.svg" x="865" y="512" width="40" height="40"></image>
+              <text class="diag-title" x="885" y="570" text-anchor="middle">Bedrock</text>
+            </g>
+
+            <!-- Cross-cutting -->
+            <line class="diag-hair" x1="80" y1="612" x2="1140" y2="612"></line>
+            <text class="diag-row-label" x="80" y="634">SÉCURITÉ ET OBSERVABILITÉ (TRANSVERSE)</text>
+
+            <g class="diag-node" data-service="IAM" data-desc="Un rôle à privilège minimal par Lambda, aucune permission générique partagée." data-color="#DE2D34">
+              <image href="aws-icons/iam.svg" x="90" y="650" width="28" height="28"></image>
+              <text class="diag-chip-label" x="126" y="669">IAM : un rôle par Lambda</text>
+            </g>
+
+            <g class="diag-node" data-service="Secrets Manager" data-desc="Conserve les identifiants API on-prem, jamais codés en dur." data-color="#DE2D34">
+              <image href="aws-icons/secrets-manager.svg" x="450" y="650" width="28" height="28"></image>
+              <text class="diag-chip-label" x="486" y="669">Secrets Manager : identifiants on-prem</text>
+            </g>
+
+            <g class="diag-node" data-service="CloudWatch" data-desc="Logs et alarmes sur chaque exécution Lambda et machine à états." data-color="#D82C6C">
+              <image href="aws-icons/cloudwatch.svg" x="850" y="650" width="28" height="28"></image>
+              <text class="diag-chip-label" x="886" y="669">CloudWatch : logs et alarmes</text>
+            </g>
+
+            <!-- Out to tool -->
+            <line class="diag-line" x1="610" y1="730" x2="610" y2="776" marker-end="url(#arrow)"></line>
+
+            <!-- Single flow dot travelling the whole pipeline path -->
+            <circle class="diag-flow-dot" r="4" style="offset-path: path('M610,88 L610,106 M240,260 L266,260 M420,260 L446,260 M525,310 L525,346 M600,410 L626,410 M780,410 L806,410 M960,410 L986,410 M610,730 L610,776');"></circle>
+
+            <rect class="diag-box diag-box-tool" x="470" y="780" width="280" height="86" rx="10"></rect>
+            <text class="diag-title" x="610" y="814" text-anchor="middle">Outil d'analyse des incidents</text>
+            <text class="diag-sub" x="610" y="834" text-anchor="middle">Score TOIL · Priorité · KPI de réduction</text>
+            <text class="diag-sub" x="610" y="850" text-anchor="middle">Validation humaine · Backlog</text>
+          </svg>
+          <div class="diag-tooltip" id="diagTooltip"></div>
+        </figure>
+
+        <div class="infra-note reveal">
+          <span class="dot">!</span>
+          <span>Les données quittant les systèmes on-premise nécessitent une revue de sécurité et de conformité avant de valider cette option : classifier les preuves sensibles et confirmer le chemin de transport.</span>
+        </div>
+      </section>
+
         </div>
       </section>
     </main>
 
-    <footer>
-      <div class="implementation-callout"><strong>First implementation:</strong><span>Add TOIL score fields, display the evidence behind each score and require human validation before any automation decision</span></div>
+    <footer class="page-footer">
+      Proposition interne · Platform Engineering.
     </footer>
   </div>
+
+  <script>
+  (function () {
+    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var revealEls = document.querySelectorAll('.reveal, .roadmap');
+
+    if (reduceMotion || !('IntersectionObserver' in window)) {
+      revealEls.forEach(function (el) { el.classList.add('is-visible'); });
+    } else {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            io.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+      revealEls.forEach(function (el) { io.observe(el); });
+    }
+
+    // Ouverture / fermeture animée du détail technique
+    var details = document.querySelector('details.appendix');
+    if (details && !reduceMotion) {
+      var body = details.querySelector('.appendix-body');
+      var summary = details.querySelector('summary');
+
+      summary.addEventListener('click', function (e) {
+        e.preventDefault();
+
+        if (details.open) {
+          var startHeight = body.scrollHeight;
+          body.style.height = startHeight + 'px';
+          requestAnimationFrame(function () {
+            body.style.transition = 'height 0.35s ease';
+            body.style.height = '0px';
+          });
+          body.addEventListener('transitionend', function handler() {
+            details.open = false;
+            body.style.transition = '';
+            body.style.height = '';
+            body.removeEventListener('transitionend', handler);
+          });
+        } else {
+          details.open = true;
+          var endHeight = body.scrollHeight;
+          body.style.height = '0px';
+          requestAnimationFrame(function () {
+            body.style.transition = 'height 0.35s ease';
+            body.style.height = endHeight + 'px';
+          });
+          body.addEventListener('transitionend', function handler() {
+            body.style.transition = '';
+            body.style.height = '';
+            body.removeEventListener('transitionend', handler);
+          });
+        }
+      });
+    }
+
+    // Info-bulles du schéma AWS : nom du service en gras + description
+    var tooltip = document.getElementById('diagTooltip');
+    var figureEl = document.querySelector('.architecture-figure');
+    if (tooltip && figureEl) {
+      var nodes = figureEl.querySelectorAll('.diag-node');
+      nodes.forEach(function (node) {
+        node.addEventListener('mouseenter', function () {
+          var service = node.getAttribute('data-service') || '';
+          var desc = node.getAttribute('data-desc') || '';
+          var color = node.getAttribute('data-color') || 'var(--ink)';
+          tooltip.innerHTML = '<strong>' + service + '</strong> : ' + desc;
+          tooltip.style.background = color;
+          tooltip.classList.add('is-visible');
+        });
+        node.addEventListener('mousemove', function (e) {
+          var figRect = figureEl.getBoundingClientRect();
+          var x = e.clientX - figRect.left + 14;
+          var y = e.clientY - figRect.top + 14;
+          var maxX = figureEl.clientWidth - tooltip.offsetWidth - 8;
+          if (x > maxX) { x = e.clientX - figRect.left - tooltip.offsetWidth - 14; }
+          tooltip.style.left = x + 'px';
+          tooltip.style.top = y + 'px';
+        });
+        node.addEventListener('mouseleave', function () {
+          tooltip.classList.remove('is-visible');
+        });
+      });
+    }
+  })();
+  </script>
 </body>
 </html>
-
